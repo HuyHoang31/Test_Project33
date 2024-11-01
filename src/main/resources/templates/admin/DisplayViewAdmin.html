@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Danh Sách Phim</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+
+<div class="container mt-5">
+    <h2 class="text-center">Danh Sách Phim</h2>
+    <form th:action="@{/movies/search}" method="get" class="form-inline mb-4">
+        <input type="text" name="name" class="form-control mr-2" placeholder="Tìm kiếm theo tên phim">
+        <button type="submit" class="btn btn-primary">Tìm kiếm</button>
+    </form>
+    <table class="table table-bordered mt-4">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Tên Phim</th>
+            <th>Hình Ảnh</th>
+            <th>Banner</th>
+            <th>Tác Giả</th>
+            <th>Diễn Viên Chính</th>
+            <th>Nhà Sản Xuất</th>
+            <th>Đạo Diễn</th>
+            <th>Thể Loại</th>
+            <th>Hành Động</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="movie : ${movies}">
+            <td th:text="${movie.movieId}"></td>
+            <td th:text="${movie.name}"></td>
+            <td>
+                <img th:src="@{/uploads/{filename}(filename=${movie.image})}" alt="Hình ảnh phim" width="100" height="150"/>
+            </td>
+            <td>
+                <img th:src="@{/uploads/{filename}(filename=${movie.banner})}" alt="Banner phim" width="100" height="50"/>
+            </td>
+            <td th:text="${movie.author}"></td>
+            <td th:text="${movie.mainActor}"></td>
+            <td th:text="${movie.producerName}"></td>
+            <td th:text="${movie.directorName}"></td>
+            <td th:text="${movie.category.categoryName}"></td>
+            <td>
+                <a th:href="@{/movies/edit/{id}(id=${movie.movieId})}" class="btn btn-warning">Sửa</a>
+                <a th:href="@{/movies/delete/{id}(id=${movie.movieId})}" class="btn btn-danger" th:onclick="'return confirm(\'Xóa phim này?\')'">Xóa</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <a href="/movies/add" class="btn btn-primary mt-3">Thêm Phim Mới</a>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.7/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

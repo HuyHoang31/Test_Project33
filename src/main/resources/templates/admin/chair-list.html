@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Danh sách ghế ngồi</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container my-5">
+    <h1 class="mb-4">Danh sách ghế ngồi</h1>
+    <table class="table table-striped table-hover">
+        <thead class="table-dark">
+        <tr>
+            <th>ID</th>
+            <th>Tên ghế</th>
+            <th>Trạng thái</th>
+            <th>Phòng</th>
+            <th>Hành động</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!-- Duyệt qua danh sách ghế từ model -->
+        <tr th:each="chair : ${chairs}">
+            <td th:text="${chair.idchair}"></td>
+            <td th:text="${chair.chairName}"></td>
+            <td th:text="${chair.chairStatus.statusName}"></td>
+            <td th:text="${chair.room.name}"></td>
+            <td>
+                <a th:href="@{'/admin/chairs/edit/' + ${chair.idchair}}" class="btn btn-warning btn-sm">Sửa</a>
+                <a th:href="@{'/admin/chairs/delete/' + ${chair.idchair}}" class="btn btn-danger btn-sm" onclick="return confirm('Xác nhận xóa ghế này?')">Xóa</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <a th:href="@{/admin/chairs/add}" class="btn btn-primary">Thêm ghế mới</a>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

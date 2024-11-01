@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Register</title>
+    <link rel="stylesheet" href="/Css/login.css">
+</head>
+<body>
+<div class="full_form">
+    <h2 class="name">Đăng Kí</h2>
+    <form th:action="@{/users/register}" th:object="${user}" method="post">
+        <br>
+            <input type="email"  class="input" id="email" th:field="*{email}" placeholder="Nhập email" required>
+        <br>
+            <input type="text" class="input" id="fullname" th:field="*{fullname}" placeholder="Nhập họ và tên" required>
+        <br>
+
+            <input type="password" class="input" id="pass" th:field="*{pass}" placeholder="Nhập mật khẩu" required>
+        <br>
+
+            <input type="text" class="input" id="phone" th:field="*{phone}" placeholder="Nhập số điện thoại" required>
+
+
+        <div class="submit">
+            <input type="submit" value="Đăng Kí" class="submit1">
+        </div>
+        <br>
+        <a th:href="@{/users/login}" class="register" >Đã có tài khoản? Đăng nhập</a>
+    </form>
+</div>
+</body>
+</html>

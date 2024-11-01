@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.w3.org/1999/xhtml"th:replace="~{base::layout(~{::section})}">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${movie.name}"></title>
+
+      <link rel="stylesheet" href="/css/home.css">
+</head>
+
+<body>
+<section>
+        <div class="movie-details-container">
+            <div class="banner">
+                <img th:src="@{/uploads/{filename}(filename=${movie.banner})}" alt="Banner phim" />
+                <div class="banner-overlay">
+                    <h1 th:text="${movie.name}">Tên Phim</h1>
+                </div>
+            </div>
+
+            <div class="movie-content">
+                <a th:href="@{/users}" class="">Quay lại trang chủ</a>
+                <div class="moives">
+                    <div class="poster">
+                        <img th:src="@{/uploads/{filename}(filename=${movie.image})}" alt="Hình ảnh phim"/>
+                    </div>
+                    <div class="info">
+                        <h2 th:text="${movie.name}">Tên phim</h2>
+                        <p><span class="label">Thời lượng:</span> <span th:text="${movie.time}"></span> </p>
+                        <p><span class="label">Nhà sản xuất:</span> <span th:text="${movie.producerName}"></span></p>
+                        <p><span class="label">Đạo diễn:</span> <span th:text="${movie.directorName}"></span></p>
+                        <p><span class="label">Diễn viên chính:</span> <span th:text="${movie.mainActor}"></span></p>
+                        <p><span class="label">Tác giả:</span> <span th:text="${movie.author}"></span></p>
+                        <p><span class="label">Trạng Thái:</span> <span th:text="${movie.status}"></span></p>
+                    </div>
+
+                </div>
+
+                <div class="related-movies">
+                    <h3>Phim Đang Chiếu</h3>
+                    <div th:each="movie,iterStat  : ${movies}">
+                        <div th:if="${iterStat.index < 3}" class="related-movie-item">
+                            <img class="image" th:src="@{/uploads/{filename}(filename=${movie.image})}" alt="Hình ảnh phim"  />
+                            <div class="related-info">
+                                <p th:text="${movie .name}"></p>
+                            </div>
+                        </div>
+                    </div>
+                    <button>Xem thêm</button>
+                    <!-- Thêm các phim liên quan khác nếu cần -->
+                </div>
+
+            </div>
+            <div class="contaier-movies">
+                <h1>Nội Dung Phim</h1>
+                <p th:text="${movie.description}" ></p>
+            </div>
+            <div class="contair-flex">
+
+                <div class="contaier-tilte">
+                    <h1>Lịch chiếu</h1>
+                </div>
+                <div class="schedule-container">
+
+                    <span class="arrow-btn" onclick="previousDays()"> <svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" width="24" height="32"><path fill="none" stroke="rgb(174,179,171)" stroke-linecap="round" stroke-linejoin="round" stroke-width="48" d="M328 112L184 256l144 144"></path></svg></span>
+                    <div id="dates" class="dates"></div>
+                    <span class="arrow-btn" onclick="nextDays()"> <svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" width="24" height="32"><path fill="none" stroke="rgb(174,179,171)" stroke-linecap="round" stroke-linejoin="round" stroke-width="48" d="m184 112l144 144l-144 144"></path></svg>
+                    </span>
+                    <div class="margin">
+
+                        <select class="dropdown">
+                            <option>Toàn quốc</option>
+                            <option th:each="cinema : ${cinemas}"
+                                    th:value="${cinema.idCinema}"
+                                    th:text="${cinema.address}">
+                            </option>
+                            <!-- Thêm các tùy chọn khác nếu cần -->
+                        </select>
+                        <select class="dropdown">
+                            <option>Tất cả rạp</option>
+                            <option th:each="cinema : ${cinemas}"
+                                    th:value="${cinema.idCinema}"
+                                    th:text="${cinema.name}">
+                            </option>
+                            <!-- Thêm các tùy chọn khác nếu cần -->
+                        </select>
+                    </div>
+                </div>
+                <div class="cinema">
+                    <div class="schedule-times">
+                        <h2>Galaxy Nguyễn Du</h2>
+                        <p>2D Phụ Đề</p>
+
+                        <div class="time-buttons">
+                            <button class="time-btn">10:45</button>
+                            <button class="time-btn">11:45</button>
+                            <button class="time-btn">13:15</button>
+                            <button class="time-btn">14:30</button>
+                            <button class="time-btn">15:30</button>
+                            <button class="time-btn">16:45</button>
+                            <button class="time-btn">17:45</button>
+                            <button class="time-btn">19:00</button>
+                            <button class="time-btn">20:00</button>
+                            <button class="time-btn">22:00</button>
+                        </div>
+                    </div>
+                </div>
+
+<script>
+    const daysOfWeek = ['Chủ Nhật', 'Thứ Hai', 'Thứ Ba', 'Thứ Tư', 'Thứ Năm', 'Thứ Sáu', 'Thứ Bảy'];
+    let currentDate = new Date();
+
+    function renderDates() {
+        const datesContainer = document.getElementById('dates');
+        datesContainer.innerHTML = '';
+
+        for (let i = 0; i < 4; i++) { // Hiển thị 4 ngày
+            const date = new Date(currentDate);
+            date.setDate(currentDate.getDate() + i);
+
+            const dayName = daysOfWeek[date.getDay()];
+            const dayNumber = date.toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit' });
+
+            const dateItem = document.createElement('div');
+            dateItem.classList.add('date-item');
+
+            const dayElement = document.createElement('p');
+            dayElement.textContent = dayName;
+
+            const dateElement = document.createElement('span');
+            dateElement.textContent = dayNumber;
+
+            dateItem.appendChild(dayElement);
+            dateItem.appendChild(dateElement);
+            datesContainer.appendChild(dateItem);
+        }
+    }
+
+    function nextDays() {
+        currentDate.setDate(currentDate.getDate() + 4);
+        renderDates();
+    }
+
+    function previousDays() {
+        currentDate.setDate(currentDate.getDate() - 4);
+        renderDates();
+    }
+
+    renderDates(); // Hiển thị ngày ban đầu
+</script>
+</section>l
+</body>
+
+</html>

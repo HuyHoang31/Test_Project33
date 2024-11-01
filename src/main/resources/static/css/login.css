@@ -1,0 +1,61 @@
+body{
+    margin: 40px;
+    display: flex;
+     justify-content: center;
+
+    background: linear-gradient(to right, rgba(88,37,123,0),   rgba(88,37,123,1));
+}
+.error {
+  color: red;
+}
+.full_form {
+      padding: 20px 20px;
+      border-radius: 10px;
+      height: 500px;
+      width: 500px;
+      background-color: #FFF;
+      border: 2px solid #FFF;
+      text-align: center;
+ }
+ .name {
+    text-align: center;
+ }
+
+ .input {
+
+   outline: none;
+    height: 30px;
+     width: 400px;
+     border: none;
+     border-bottom: 1px solid #333;
+ }
+ .forgetpass {
+   float: right;
+   padding-right: 0 80px;
+
+ }
+ a{
+   text-decoration: none;
+   color: #333;
+   padding: 0 80px;
+ }
+ .register {
+   display: flex;
+   justify-content: center;
+   margin: 0 auto;
+ }
+ .submit {
+   margin-top: 30px;
+ }
+ .submit1 {
+
+    width: 200px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    margin: 0 auto;
+    padding: 10px;
+    border: none;
+    border-radius: 30px;
+    background-image: linear-gradient(to right, #00dbde 0%, #fc00ff 100%);
+ }

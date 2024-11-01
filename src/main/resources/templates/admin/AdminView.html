@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <style>
+        .content-section {
+            display: none;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        .sidebar {
+            width: 200px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100%;
+            background-color: #343a40;
+            color: #fff;
+            padding-top: 20px;
+        }
+
+        .sidebar h2 {
+            color: #fff;
+            text-align: center;
+        }
+
+        .sidebar .nav-link {
+            color: #adb5bd;
+        }
+
+        .sidebar .nav-link:hover {
+            color: #fff;
+        }
+
+        .content {
+            margin-left: 220px;
+            padding: 20px;
+        }
+    </style>
+</head>
+
+<body>
+<!-- Sidebar -->
+<div class="sidebar">
+    <h2 class="text-center py-3">Admin Panel</h2>
+    <ul class="nav flex-column">
+        <li class="nav-item"><a href="#" class="nav-link"
+                                onclick="showSection('users'); event.preventDefault();">Users</a></li>
+        <li class="nav-item"><a href="#" class="nav-link"
+                                onclick="showSection('movies'); event.preventDefault();">Movies</a></li>
+        <li class="nav-item"><a href="#" class="nav-link"
+                                onclick="showSection('categories'); event.preventDefault();">Categories</a></li>
+        <li class="nav-item"><a href="#" class="nav-link"
+                                onclick="showSection('showtimes'); event.preventDefault();">Showtimes</a></li>
+        <li class="nav-item"><a href="#" class="nav-link"
+                                onclick="showSection('tickets'); event.preventDefault();">Tickets</a></li>
+        <li class="nav-item"><a href="#" class="nav-link"
+                                onclick="showSection('cinemas'); event.preventDefault();">Cinema</a></li>
+        <li class="nav-item"><a href="#" class="nav-link"
+                                onclick="showSection('chairs'); event.preventDefault();">Chair</a></li>
+        <li class="nav-item"><a href="#" class="nav-link"
+                                onclick="showSection('rooms'); event.preventDefault();">Rooms</a></li>
+    </ul>
+</div>
+
+<!-- Nội dung chính -->
+<div class="content">
+    <!-- Users Section -->
+    <div id="users" class="content-section">
+        <h2>User List</h2>
+        <table class="table table-bordered table-striped">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Email</th>
+                <th>Full Name</th>
+                <th>Phone</th>
+<!--                <th>Role</th>-->
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="user : ${users}">
+                <td th:text="${user.userID}"></td>
+                <td th:text="${user.email}"></td>
+                <td th:text="${user.fullname}"></td>
+                <td th:text="${user.phone}"></td>
+<!--                <td th:text="${user.role}"></td>-->
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Movies Section -->
+    <div id="movies" class="content-section">
+        <h2 class="text-center">Danh Sách Phim</h2>
+        <form th:action="@{/admin/movies/search}" method="get" class="form-inline mb-4">
+            <input type="text" name="name" class="form-control mr-2" placeholder="Tìm kiếm theo tên phim">
+            <button type="submit" class="btn btn-primary">Tìm kiếm</button>
+        </form>
+        <table class="table table-bordered mt-4">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Tên Phim</th>
+                <th>Hình Ảnh</th>
+                <th>Banner</th>
+                <th>Tác Giả</th>
+                <th>Thời Lượng</th>
+                <th>Diễn Viên Chính</th>
+                <th>Nhà Sản Xuất</th>
+                <th>Đạo Diễn</th>
+                <th>Trạng Thái</th>
+                <th>Thể Loại</th>
+                <th>Hành Động</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="movie : ${movies}">
+                <td th:text="${movie.movieId}"></td>
+                <td th:text="${movie.name}"></td>
+                <td>
+                    <img th:src="@{/uploads/{filename}(filename=${movie.image})}" alt="Hình ảnh phim" width="100" height="150"/>
+                </td>
+                <td>
+                    <img th:src="@{/uploads/{filename}(filename=${movie.banner})}" alt="Banner phim" width="100" height="50"/>
+                </td>
+                <td th:text="${movie.author}"></td>
+                <td th:text="${movie.time}"></td>
+                <td th:text="${movie.mainActor}"></td>
+                <td th:text="${movie.producerName}"></td>
+                <td th:text="${movie.directorName}"></td>
+                <td th:text="${movie.status}"></td>
+                <td th:text="${movie.category.categoryName}"></td>
+                <td>
+                    <a th:href="@{/movies/edit/{id}(id=${movie.movieId})}" class="btn btn-warning">Sửa</a>
+                    <a th:href="@{/movies/delete/{id}(id=${movie.movieId})}" class="btn btn-danger" th:onclick="'return confirm(\'Xóa phim này?\')'">Xóa</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <a href="/admin/movies/add" class="btn btn-primary mt-3">Thêm Phim Mới</a>
+    </div>
+
+    <!-- Categories Section -->
+    <div id="categories" class="content-section">
+        <h2>Danh Sách Danh Mục</h2>
+        <table class="table table-bordered table-striped">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Tên Danh Mục</th>
+                <th>Hành Động</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="category : ${categories}">
+                <td th:text="${category.categoryId}"></td>
+                <td th:text="${category.categoryName}"></td>
+                <td><a th:href="@{/categories/edit/{id}(id=${category.categoryId})}"
+                       class="btn btn-warning">Sửa</a><a
+                        th:href="@{/categories/delete/{id}(id=${category.categoryId})}" class="btn btn-danger"
+                        th:onclick="'return confirm(\'Xóa danh mục này?\')'">Xóa</a></td>
+            </tr>
+            </tbody>
+        </table>
+        <a href="/admin/categories/add" class="btn btn-primary mt-3">Thêm Danh Mục Mới</a>
+    </div>
+
+    <!-- Showtimes Section -->
+    <div id="showtimes" class="content-section">
+        <h2>Danh sách Lịch Chiếu</h2>
+        <table class="table table-bordered table-striped">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Phim</th>
+                <th>Phòng</th>
+                <th>Rạp Chiếu</th>
+                <th>Ngày Chiếu</th>
+                <th>Suất Chiếu</th>
+                <th>Hành động</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="showtime : ${showtimes}">
+                <td th:text="${showtime.id}"></td>
+                <td th:text="${showtime.movie != null ? showtime.movie.name : 'Chưa có phim'}"></td>
+                <td th:text="${showtime.room != null ? showtime.room.name : 'Chưa có phòng'}"></td>
+                <td th:text="${showtime.cinema != null ? showtime.cinema.name : 'Chưa có rạp chiếu'}"></td>
+
+
+                <td th:text="${showtime.date}"></td>
+                <td>
+                    <ul>
+                        <li th:each="showSession : ${showtime.sessions}" th:text="${showSession.startTime}">
+                        </li>
+                    </ul>
+                </td>
+                <td><a th:href="@{'/admin/showtimes/edit/' + ${showtime.id}}"
+                       class="btn btn-warning btn-sm">Sửa</a><a
+                        th:href="@{'/admin/showtimes/delete/' + ${showtime.id}}" class="btn btn-danger btn-sm"
+                        onclick="return confirm('Xác nhận xóa lịch chiếu này?')">Xóa</a></td>
+            </tr>
+            </tbody>
+        </table>
+        <a href="/admin/showtimes/add" class="btn btn-primary mb-3">Thêm Lịch Chiếu Mới</a>
+    </div>
+
+    <!-- Cinema Section -->
+    <div id="cinemas" class="content-section">
+        <h2>Danh sách rạp chiếu</h2>
+        <table class="table table-bordered table-striped">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Tên rạp</th>
+                <th>Địa chỉ</th>
+                <th>Hành động</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="cinema : ${cinemas}">
+                <td th:text="${cinema.idCinema}"></td>
+                <td th:text="${cinema.name}"></td>
+                <td th:text="${cinema.address}"></td>
+                <td><a th:href="@{/admin/cinemas/edit/{id}(id=${cinema.idCinema})}"
+                       class="btn btn-warning btn-sm">Sửa</a><a
+                        th:href="@{/admin/cinemas/delete/{id}(id=${cinema.idCinema})}"
+                        class="btn btn-danger btn-sm"
+                        onclick="return confirm('Bạn có chắc chắn muốn xóa?')">Xóa</a></td>
+            </tr>
+            </tbody>
+        </table>
+        <a th:href="@{/admin/cinemas/add}" class="btn btn-primary">Thêm rạp mới</a>
+    </div>
+
+    <!-- Chair Section -->
+    <div id="chairs" class="content-section">
+        <h2>Danh sách ghế ngồi</h2>
+        <table class="table table-bordered table-striped">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Tên ghế</th>
+                <th>Giá ghế</th>
+                <th>Trạng thái</th>
+                <th>Phòng</th>
+                <th>Hành động</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="chair : ${chairs}">
+                <td th:text="${chair.idchair}"></td>
+                <td th:text="${chair.chairName}"></td>
+                <td th:text="${chair.price}"></td>
+                <td th:text="${chair.chairStatus.statusName}"></td>
+                <td th:text="${chair.room.name}"></td>
+                <td><a th:href="@{'/admin/chairs/edit/' + ${chair.idchair}}"
+                       class="btn btn-warning btn-sm">Sửa</a><a
+                        th:href="@{'/admin/chairs/delete/' + ${chair.idchair}}" class="btn btn-danger btn-sm"
+                        onclick="return confirm('Xác nhận xóa ghế này?')">Xóa</a></td>
+            </tr>
+            </tbody>
+        </table>
+        <a th:href="@{/admin/chairs/add}" class="btn btn-primary">Thêm ghế mới</a>
+    </div>
+
+    <!-- Tickets Section -->
+    <div id="tickets" class="content-section">
+        <h2>Danh sách vé</h2>
+        <table class="table table-bordered table-striped">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Trạng thái</th>
+                <th>Loại</th>
+                <th>Giá</th>
+                <th>Chi tiết</th>
+                <th>Hành động</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="ticket : ${tickets}">
+                <td th:text="${ticket.id}"></td>
+                <td th:text="${ticket.status}"></td>
+                <td th:text="${ticket.type}"></td>
+                <td th:text="${ticket.price}"></td>
+                <td><a th:href="@{'/admin/tickets/' + ${ticket.id}}" class="btn btn-info btn-sm">Chi tiết</a>
+                </td>
+                <td><a th:href="@{'/admin/tickets/delete/' + ${ticket.id}}" class="btn btn-danger btn-sm"
+                       onclick="return confirm('Xác nhận xóa vé này?')">Xóa</a></td>
+            </tr>
+            </tbody>
+        </table>
+    </div> <!-- Tickets Section -->
+    <div id="rooms" class="content-section">
+        <h1>Danh sách phòng</h1>
+        <a href="/admin/rooms/add" class="btn btn-primary">Thêm phòng mới</a>
+        <table class="table table-bordered mt-3">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Tên phòng</th>
+                <th>Tên Rạp</th>
+                <th>Hành động</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="room : ${rooms}">
+                <td th:text="${room.id}"></td>
+                <td th:text="${room.name}"></td>
+                <td th:text="${room.cinema != null ? room.cinema.name : 'Chưa có rạp chiếu'}"></td>
+                <td>
+
+                    <a th:href="@{/admin/rooms/edit/{id}(id=${room.id})}" class="btn btn-warning">Chỉnh sửa</a>
+                    <a th:href="@{/admin/rooms/delete/{id}(id=${room.id})}" class="btn btn-danger"
+                       onclick="return confirm('Bạn có chắc chắn muốn xóa không?');">Xóa</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+<!-- Bootstrap và JavaScript -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    function showSection(sectionId) {
+        const sections = document.querySelectorAll('.content-section');
+        sections.forEach(section => { section.classList.remove('active'); });
+        document.getElementById(sectionId).classList.add('active');
+    }
+</script>
+</body>
+
+</html>

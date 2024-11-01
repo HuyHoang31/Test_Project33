@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Sửa Phim</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container mt-5">
+    <h2 class="text-center">Chỉnh Sửa Phim</h2>
+    <form th:action="@{/admin/movies/update/{id}(id=${movie.movieId})}" method="post" enctype="multipart/form-data" class="mt-4">
+        <!-- Trường Tên Phim -->
+        <div class="form-group">
+            <label for="name">Tên Phim:</label>
+            <input type="text" class="form-control" id="name" th:value="${movie.name}" name="name" required>
+        </div>
+
+        <!-- Trường Hình Ảnh -->
+        <div class="form-group">
+            <label for="image">Hình Ảnh:</label>
+            <input type="file" class="form-control" id="image" name="imageFile">
+            <!-- Hiển thị hình ảnh hiện tại -->
+            <div>
+                <img th:src="@{${movie.image}}" alt="Hình Ảnh Phim" class="img-thumbnail mt-2" width="150px">
+            </div>
+        </div>
+
+        <!-- Trường Tác Giả -->
+        <div class="form-group">
+            <label for="author">Tác Giả:</label>
+            <input type="text" class="form-control" id="author" th:value="${movie.author}" name="author" required>
+        </div>
+
+        <!-- Trường Diễn Viên Chính -->
+        <div class="form-group">
+            <label for="mainActor">Diễn Viên Chính:</label>
+            <input type="text" class="form-control" id="mainActor" th:value="${movie.mainActor}" name="mainActor" required>
+        </div>
+
+        <!-- Trường Nhà Sản Xuất -->
+        <div class="form-group">
+            <label for="producerName">Nhà Sản Xuất:</label>
+            <input type="text" class="form-control" id="producerName" th:value="${movie.producerName}" name="producerName" required>
+        </div>
+
+        <!-- Trường Đạo Diễn -->
+        <div class="form-group">
+            <label for="directorName">Đạo Diễn:</label>
+            <input type="text" class="form-control" id="directorName" th:value="${movie.directorName}" name="directorName" required>
+        </div>
+
+        <!-- Trường URL Trailer -->
+        <div class="form-group">
+            <label for="trailerUrl">URL Trailer:</label>
+            <input type="text" class="form-control" id="trailerUrl" th:value="${movie.trailerUrl}" name="trailerUrl" required>
+        </div>
+
+        <!-- Trường Thể Loại -->
+        <div class="form-group">
+            <label for="category">Thể Loại:</label>
+            <select id="category" class="form-control" name="category" required>
+                <option value="" disabled>Chọn thể loại</option>
+                <option th:each="cat : ${categories}" th:value="${cat.categoryId}" th:text="${cat.categoryName}"
+                        th:selected="${cat.categoryId == movie.category.categoryId}"></option>
+            </select>
+        </div>
+
+        <!-- Nút Cập Nhật và Quay Lại -->
+        <button type="submit" class="btn btn-primary">Cập Nhật Phim</button>
+        <a href="/admin/movies" class="btn btn-secondary">Quay Lại</a>
+    </form>
+</div>
+</body>
+</html>

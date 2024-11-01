@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.w3.org/1999/xhtml" th:replace="~{base::layout(~{::section})}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đặt vé Galaxy Cinema</title>
+    <link rel="stylesheet" href="/css/home.css">
+    <style>
+        .progress-bars {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .progress-step {
+            padding: 10px 15px;
+            text-align: center;
+            text-decoration: none;
+            color: black;
+            border-radius: 5px;
+        }
+
+        .progress-step.active {
+            background-color: #3498db;
+            color: white;
+        }
+
+        .main-s {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .div-ul {
+            margin-bottom: 15px;
+        }
+
+        .toggle-button {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .content-section {
+            display: none;
+            margin-top: 10px;
+        }
+
+        .div-item {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .div-img {
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .btn-flex {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+    </style>
+</head>
+<body>
+<section>
+    <div class="progress-bars">
+        <a href="/choose-movie" id="stepLabel1" class="progress-step active">Chọn phim / Rạp / Suất</a>
+        <a href="javascript:void(0);" id="stepLabel2" class="progress-step" onclick="checkAndProceed()">Chọn ghế</a>
+        <a href="/choose-food" id="stepLabel3" class="progress-step">Chọn thức ăn</a>
+        <a href="/confirmation" id="stepLabel5" class="progress-step">Xác nhận</a>
+        <a href="/payment" id="stepLabel4" class="progress-step">Thanh toán</a>
+    </div>
+
+    <div class="main-s">
+        <div class="man">
+            <!-- Chọn vị trí -->
+            <div class="div-ul">
+                <div class="toggle-button" onclick="toggleContent('locationSection', this)">
+                    Chọn vị trí
+                    <svg width="20" height="20" viewBox="0 0 24 24">
+                        <path d="M7 10l5 5 5-5z" />
+                    </svg>
+                </div>
+                <div id="locationSection" class="content-section">
+                    <div th:each="cinema : ${cinemas}">
+                        <button type="button" class="btn-button"
+                                th:attr="data-id=${cinema.idCinema}"
+                                th:text="${cinema.address}"
+                                onclick="selectLocation(this)">
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Chọn phim -->
+            <div class="div-ul">
+                <div class="toggle-button" onclick="toggleContent('movieSection', this)">
+                    Chọn phim
+                    <svg width="20" height="20" viewBox="0 0 24 24">
+                        <path d="M7 10l5 5 5-5z" />
+                    </svg>
+                </div>
+                <div id="movieSection" class="content-section">
+                    <p>Danh sách phim</p>
+                    <select id="movieSelect" onchange="selectMovie(this)">
+                        <option value="">Chọn phim</option>
+                        <div th:each="movie : ${nowShowingMovies}">
+                            <option th:value="${movie.movieId}" th:text="${movie.name}"></option>
+                        </div>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Chọn suất chiếu -->
+            <div class="div-ul">
+                <div class="toggle-button" onclick="toggleContent('sessionSection', this)">
+                    Chọn suất
+                    <svg width="20" height="20" viewBox="0 0 24 24">
+                        <path d="M7 10l5 5 5-5z" />
+                    </svg>
+                </div>
+                <div id="sessionSection" class="content-section">
+                    <p>Danh sách suất chiếu</p>
+                    <select id="sessionSelect" onchange="selectSession(this)">
+                        <option value="">Chọn suất chiếu</option>
+                        <div th:each="showtime : ${showtimes}">
+                            <div th:each="showSession : ${showtime.sessions}">
+                                <option th:value="${showSession.id}" th:text="${showSession.startTime}"></option>
+                            </div>
+                        </div>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Thông tin đã chọn -->
+            <div>
+                <p id="selectionSummary">Bạn đã chọn 0 mục</p>
+                <button onclick="checkAndProceed()" class="btn-chair">Tiếp theo</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let selectedRoomId = null;
+        let selectedMovieId = null;
+        let selectedShowtimeId = null;
+
+        function selectLocation(button) {
+            selectedRoomId = button.getAttribute("data-id");
+            alert(`Bạn đã chọn rạp: ${button.innerText}`);
+            updateSelectionSummary();
+        }
+
+<!--        function selectMovie(selectElement) {-->
+<!--            selectedMovieId = selectElement.value;-->
+<!--            const selectedMovieName = selectElement.options[selectElement.selectedIndex].text;-->
+<!--            alert(`Bạn đã chọn phim: ${selectedMovieName}`);-->
+<!--            updateSelectionSummary();-->
+<!--        }-->
+
+<!--        function selectSession(selectElement) {-->
+<!--            selectedShowtimeId = selectElement.value;-->
+<!--            const selectedShowtimeName = selectElement.options[selectElement.selectedIndex].text;-->
+<!--            alert(`Bạn đã chọn suất chiếu: ${selectedShowtimeName}`);-->
+<!--            updateSelectionSummary();-->
+<!--        }-->
+
+        function updateSelectionSummary() {
+            const selectedCount = [selectedRoomId, selectedMovieId, selectedShowtimeId].filter(Boolean).length;
+            document.getElementById("selectionSummary").innerText = `Bạn đã chọn ${selectedCount} mục`;
+        }
+
+        function checkAndProceed() {
+            if (selectedRoomId && selectedMovieId && selectedShowtimeId) {
+                window.location.href = `/users/chair/seating?roomId=${selectedRoomId}&movieId=${selectedMovieId}&showtimeId=${selectedShowtimeId}`;
+            } else {
+                alert("Vui lòng chọn đầy đủ vị trí, phim và suất chiếu trước khi tiếp tục.");
+            }
+        }
+
+        function toggleContent(sectionId, button) {
+            const content = document.getElementById(sectionId);
+            content.style.display = content.style.display === "block" ? "none" : "block";
+            button.classList.toggle("active");
+        }
+    </script>
+</section>
+</body>
+</html>

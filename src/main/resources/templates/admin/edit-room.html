@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Chỉnh sửa phòng</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container">
+    <h1>Chỉnh sửa phòng</h1>
+    <form action="#" th:action="@{/admin/rooms/update/{id}(id=${room.id})}" th:object="${room}" method="post">
+        <div class="mb-3">
+            <label for="name" class="form-label">Tên phòng</label>
+            <input type="text" id="name" class="form-control" th:field="*{name}" required>
+        </div>
+        <div class="mb-3">
+            <label for="cinema" class="form-label">Rạp Chiếu:</label>
+            <select id="cinema" th:field="*{cinema}" class="form-select" required>
+                <option th:each="cinema : ${cinemas}" th:value="${cinema.idCinema}" th:text="${cinema.name}"></option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Cập nhật</button>
+        <a href="/admin" class="btn btn-secondary">Trở về</a>
+    </form>
+</div>
+</body>
+</html>

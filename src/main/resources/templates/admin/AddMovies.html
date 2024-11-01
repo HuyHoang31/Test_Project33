@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Thêm Phim</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+
+<div class="container mt-5">
+    <h2 class="text-center">Thêm Phim Mới</h2>
+    <form th:action="@{/admin/movies/save}" method="post" enctype="multipart/form-data" th:object="${movie}" class="mt-4">
+        <!-- Tên phim -->
+        <div class="form-group">
+            <label for="name">Tên Phim:</label>
+            <input type="text" class="form-control" id="name" th:field="*{name}" required>
+        </div>
+
+        <!-- Hình ảnh -->
+        <div class="form-group">
+            <label for="imageFile">Hình Ảnh:</label>
+            <input type="file" class="form-control" id="imageFile" name="imageFile" required>
+        </div>
+        <!-- Banner -->
+        <div class="form-group">
+            <label for="bannerFile">Banner:</label>
+            <input type="file" class="form-control" id="bannerFile" name="bannerFile" accept="image/*" required>
+        </div>
+
+        <!-- Tác giả -->
+        <div class="form-group">
+            <label for="author">Tác Giả:</label>
+            <input type="text" class="form-control" id="author" th:field="*{author}" required>
+        </div>
+        <div class="form-group">
+            <label for="author">Thời Lượng:</label>
+            <input type="text" class="form-control" id="time" th:field="*{time}" required>
+        </div>
+        <!-- Diễn viên chính -->
+        <div class="form-group">
+            <label for="mainActor">Diễn Viên Chính:</label>
+            <input type="text" class="form-control" id="mainActor" th:field="*{mainActor}" required>
+        </div>
+
+        <!-- Nhà sản xuất -->
+        <div class="form-group">
+            <label for="producerName">Nhà Sản Xuất:</label>
+            <input type="text" class="form-control" id="producerName" th:field="*{producerName}" required>
+        </div>
+
+        <!-- Đạo diễn -->
+        <div class="form-group">
+            <label for="directorName">Đạo Diễn:</label>
+            <input type="text" class="form-control" id="directorName" th:field="*{directorName}" required>
+        </div>
+
+        <!-- URL trailer -->
+        <div class="form-group">
+            <label for="trailerUrl">URL Trailer:</label>
+            <input type="url" class="form-control" id="trailerUrl" th:field="*{trailerUrl}" required>
+        </div>
+
+        <!-- Thể loại -->
+        <div class="form-group">
+            <label for="category">Thể Loại:</label>
+            <select id="category" class="form-control" th:field="*{category}" required>
+                <option value="" disabled selected>Chọn thể loại</option>
+                <option th:each="cat : ${categories}" th:value="${cat.categoryId}" th:text="${cat.categoryName}"></option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="directorName">Trạng Thái:</label>
+            <input type="text" class="form-control" id="status" th:field="*{status}" required>
+        </div>
+
+        <div class="form-group">
+            <label for="description">Nội Dung Phim:</label>
+            <textarea class="form-control" id="description" th:field="*{description}" rows="5" placeholder="Nhập nội dung phim"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Thêm Phim</button>
+        <a th:href="@{/admin/movies}" class="btn btn-secondary">Quay Lại</a>
+    </form>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.7/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Đăng Nhập</title>
+    <link rel="stylesheet" href="/Css/login.css">
+</head>
+<body>
+
+<div class="main">
+    <div class="full_form">
+    <h2 class="name">Đăng Nhập</h2>
+    <form th:action="@{/users/login}" th:object="${user}" method="post">
+        <input type="email" class="input" th:field="*{email}" placeholder="Nhập email" required>
+      <input type="password" class="input"  th:field="*{pass}" placeholder="Nhập mật khẩu" required>
+
+        <div class="submit">
+            <input type="submit" value="Đăng nhập" class="submit1">
+        </div>
+        <br>
+        <a th:href="@{/users/register}" class="register">  Chưa có tài khoản? Đăng ký ngay</a>
+
+        <!-- Hiển thị thông báo lỗi nếu có -->
+        <div th:if="${error}" class="alert alert-danger mt-3" th:text="${error}"></div>
+
+    </form>
+</div>
+</div>
+
+</body>
+</html>

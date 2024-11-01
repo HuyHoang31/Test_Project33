@@ -1,0 +1,41 @@
+body {
+      ont-family: Arial, sans-serif;
+     min-height: 100vh;
+    display: flex;
+            background-color: #f5f7fa;
+        }
+.sidebar {
+     width: 250px;
+     background-color: #2a2d3e;
+      color: white;
+      display: flex;
+      flex-direction: column;
+}
+.sidebar a {
+  color: white;
+  text-decoration: none;
+  padding: 15px;
+  display: block;
+}
+.sidebar a:hover {
+   background-color: #44475a;
+}
+.sidebar a.active {
+   background-color: #e74c3c;
+}
+.content {
+    flex: 1;
+    padding: 20px;
+}
+.table-container {
+   margin-top: 20px;
+}
+.table th, .table td {
+   vertical-align: middle;
+}
+.conten-header {
+     display: flex;
+     align-items: center;
+     justify-content: space-between
+
+}

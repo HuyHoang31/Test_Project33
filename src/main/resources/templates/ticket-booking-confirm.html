@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Xác Nhận Đặt Vé</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container my-5">
+    <h1>Xác Nhận Đặt Vé</h1>
+    <p><strong>Phim:</strong> <span th:text="${ticket.movie.name}"></span></p>
+    <p><strong>Ngày Chiếu:</strong> <span th:text="${ticket.showtime.date}"></span></p>
+    <p><strong>Phòng Chiếu:</strong> <span th:text="${ticket.room.name}"></span></p>
+    <p><strong>Ghế Ngồi:</strong> <span th:text="${ticket.chair.name}"></span></p>
+
+    <!-- Hiển thị suất chiếu -->
+    <p><strong>Suất Chiếu:</strong>
+    <ul>
+        <li th:each="session : ${ticket.showtime.sessions}" th:text="${session.startTime}"></li>
+    </ul>
+    </p>
+
+    <p><strong>Tổng Giá:</strong> <span th:text="${ticket.totalPrice}"></span> VND</p>
+
+    <form th:action="@{/users/tickets/booking/complete}" th:object="${ticket}" method="post">
+        <button type="submit" class="btn btn-success">Hoàn Tất Đặt Vé</button>
+        <a href="/users/tickets/booking" class="btn btn-secondary">Quay Lại</a>
+    </form>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

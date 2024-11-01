@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Danh sách người dùng</title>
+    <link rel="stylesheet" href="/css/cinema.css">
+</head>
+<body>
+<h1>Danh sách người dùng</h1>
+
+<table class="user-table">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Email</th>
+        <th>Họ và tên</th>
+        <th>Số điện thoại</th>
+        <th>Hành động</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="user : ${users}">
+        <td th:text="${user.userID}"></td>
+        <td th:text="${user.email}"></td>
+        <td th:text="${user.fullname}"></td>
+        <td th:text="${user.phone}"></td>
+        <td>
+            <a th:href="@{/users/{id}(id=${user.userID})}" class="action-link detail">Chi tiết</a> |
+            <a th:href="@{/users/edit/{id}(id=${user.userID})}" class="action-link edit">Sửa</a> |
+            <a th:href="@{/users/delete/{id}(id=${user.userID})}" class="action-link delete" onclick="return confirm('Bạn có chắc chắn muốn xóa người dùng này?')">Xóa</a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+
+</body>
+</html>

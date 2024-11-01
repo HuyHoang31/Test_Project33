@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.w3.org/1999/xhtml" th:replace="~{base::layout(~{::section})}">
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>Chọn Ghế</title>
+<!-- <link rel="stylesheet" href="/css/seating.css">-->
+</head>
+<body>
+<section>
+ <div class="progress-bars">
+  <a href="/choose-movie" id="stepLabel1" class="progress-step active">Chọn phim / Rạp / Suất</a>
+  <a href="javascript:void(0);" id="stepLabel2" class="progress-step">Chọn ghế</a>
+  <a href="/confirmation" id="stepLabel5" class="progress-step">Xác nhận</a>
+  <a href="/payment" id="stepLabel4" class="progress-step">Thanh toán</a>
+ </div>
+ <div class="seat-chart">
+  <table>
+   <tbody th:each="rowGroup : ${groupedChairs}">
+   <tr>
+    <td th:text="${rowGroup.key}"></td> <!-- Hàng ghế (A, B, C, ...) -->
+    <td th:each="chair : ${rowGroup.value}">
+     <button type="button" class="seat"
+             th:class="${(chair.chairStatus.statusName == 'sold' ? 'sold' : '') + (chair.chairStatus.statusName == 'vip' ? ' vip' : '')}"
+             th:text="${chair.chairName}"
+             th:data-id="${chair.idchair}"
+             th:disabled="${chair.chairStatus.statusName == 'sold'}"
+             onclick="selectSeat(this)">
+     </button>
+    </td>
+   </tr>
+   </tbody>
+  </table>
+ </div>
+ <div class="selected-seats">
+  <h3>Ghế đã chọn:</h3>
+  <div id="selectedSeats"></div>
+
+  <a id="confirmButton" href="javascript:void(0);" class="btn-chair" onclick="confirmSelection()">Xác nhận ghế</a>
+ </div>
+
+ <script>
+  const selectedSeats = [];
+
+  function selectSeat(button) {
+      const seatId = button.getAttribute("data-id");
+
+      // Kiểm tra ghế đã được chọn chưa
+      if (selectedSeats.includes(seatId)) {
+          selectedSeats.splice(selectedSeats.indexOf(seatId), 1);
+          button.classList.remove("selected");
+      } else {
+          selectedSeats.push(seatId);
+          button.classList.add("selected");
+      }
+
+      // Hiển thị ghế đã chọn
+      document.getElementById("selectedSeats").innerText = selectedSeats.map(id => `Ghế ${id}`).join(", ");
+  }
+
+  function confirmSelection() {
+      if (selectedSeats.length === 0) {
+          alert("Vui lòng chọn ít nhất một ghế.");
+          return;
+      }
+
+      // Lấy giá trị từ model
+      const userId = /*[[${userId}]]*/ null; // Lấy userId từ model
+      const movieId = /*[[${movieId}]]*/ null; // Lấy movieId từ model
+      const showtimeId = /*[[${showtimeId}]]*/ null; // Lấy showtimeId từ model
+
+      // Debugging để kiểm tra giá trị
+      console.log("User ID:", userId);
+      console.log("Movie ID:", movieId);
+      console.log("Showtime ID:", showtimeId);
+
+      // Xây dựng URL với các tham số cần thiết
+      const url = `/users/confirm-order?userId=${userId}&movieId=${movieId}&showtimeId=${showtimeId}&selectedSeats=${selectedSeats.join(",")}`;
+      window.location.href = url; // Điều hướng đến trang xác nhận
+  }
+ </script>
+</section>
+</body>
+</html>

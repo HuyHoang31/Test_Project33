@@ -18,7 +18,7 @@ public class SecurityConfig {
 
     @Bean
     public AuthenticationSuccessHandler authenticationSuccessHandler() {
-        return new AuthSucessHandlerImpl(); // Đảm bảo đây là lớp handler đúng của bạn
+        return new AuthSucessHandlerImpl();
     }
 
     @Autowired

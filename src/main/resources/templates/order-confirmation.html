@@ -1,45 +1,51 @@
 <!DOCTYPE html>
-<html lang="vi" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="vi" xmlns:th="http://www.w3.org/1999/xhtml"
+      th:replace="~{base::layout(~{::section})}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Xác Nhận Đơn Hàng</title>
-    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="/css/home.css">
+
 </head>
 <body>
-<h1>Xác Nhận Đơn Hàng</h1>
+<section>
+    <div class="center">
+
 <div>
-    <p><strong>Tên người dùng:</strong> <span th:text="${userName}"></span></p>
-    <p><strong>Tên phim:</strong> <span th:text="${moviesName}"></span></p>
+    <h1 class="center-name">Xác Nhận Đơn Hàng</h1>
+    <p class="ps"><strong>Tên người dùng:</strong> <span th:text="${userName}"></span></p>
+    <p class="ps"><strong>Tên phim:</strong> <span th:text="${moviesName}"></span></p>
 
 
-    <p><strong>Tên rạp:</strong> <span th:text="${cinemaName}"></span></p>
-    <p><strong>Tên phòng:</strong> <span th:text="${roomName}"></span></p>
+    <p class="ps"><strong>Tên rạp:</strong> <span th:text="${cinemaName}"></span></p>
+    <p class="ps"><strong>Tên phòng:</strong> <span th:text="${roomName}"></span></p>
 
-    <p><strong>Suất chiếu:</strong> <span th:text="${showtime}"></span></p>
-    <p><strong>Ghế ngồi:</strong> <span th:text="${#lists.size(selectedChairs)}"></span></p>
+    <p class="ps"><strong>Suất chiếu:</strong> <span th:text="${showtime}"></span></p>
+    <p class="ps"><strong>Ghế ngồi:</strong> <span th:text="${#lists.size(selectedChairs)}"></span></p>
     <ul>
-        <li th:each="chair : ${selectedChairs}">
+        <li class="ps"  th:each="chair : ${selectedChairs}">
             <span th:text="${chair.chairName}"></span>
         </li>
     </ul>
-    <p><strong>Tổng tiền:</strong> <span th:text="${totalPrice}"></span> VNĐ</p>
+    <p class="ps"><strong>Tổng tiền:</strong> <span th:text="${totalPrice}"></span> VNĐ</p>
 
 
     <h2>Phương thức thanh toán</h2>
-    <form action="/payment/confirm" method="post">
-        <div class="mb-3">
-            <label for="paymentMethod" class="form-label">Chọn phương thức thanh toán:</label>
-            <select class="form-select" id="paymentMethod" name="paymentMethod" required>
-                <option value="">Chọn phương thức</option>
-                <option value="credit_card">Thẻ tín dụng</option>
-                <option value="bank_transfer">Chuyển khoản ngân hàng</option>
-                <option value="cash">Tiền mặt</option>
-            </select>
-        </div>
-        <button type="submit" class="btn btn-primary">Thanh Toán</button>
-        <a href="/tickets/booking" class="btn btn-secondary">Trở về</a>
+    <form th:action="@{/users/vnpay/payment}" method="get">
+        <label for="paymentMethod">Chọn phương thức thanh toán:</label>
+        <select name="paymentMethod" id="paymentMethod" required>
+            <option value="" disabled selected>Chọn phương thức</option>
+            <option value="VNPAY">VNPAY</option>
+            <option value="Cash">Tiền mặt</option>
+        </select>
+        <input type="hidden" name="amount" th:value="${totalPrice}"/>
+        <input type="hidden" name="orderInfo" th:value="'Đặt vé cho phim ' + ${moviesName}"/>
+        <button type="submit" class="button">Thanh Toán</button>
+        <a href="/users" class="button" style="background-color: #f44336;">Trở về</a>
     </form>
 </div>
+    </div>
+</section>
 </body>
 </html>

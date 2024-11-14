@@ -1,31 +1,47 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Đăng Nhập</title>
-    <link rel="stylesheet" href="/Css/login.css">
+ <meta charset="UTF-8">
+ <title>Đăng Nhập</title>
+ <link rel="stylesheet" href="/Css/login.css">
 </head>
 <body>
 
 <div class="main">
-    <div class="full_form">
-    <h2 class="name">Đăng Nhập</h2>
-    <form th:action="@{/users/login}" th:object="${user}" method="post">
-        <input type="email" class="input" th:field="*{email}" placeholder="Nhập email" required>
-      <input type="password" class="input"  th:field="*{pass}" placeholder="Nhập mật khẩu" required>
+ <div class="full_form">
+  <h2 class="name">Đăng Nhập</h2>
+  <form action="/users/login" method="post">
+   <!-- Nhập Email -->
+   <input type="email" name="email" class="input" placeholder="Nhập email" required>
 
-        <div class="submit">
-            <input type="submit" value="Đăng nhập" class="submit1">
-        </div>
-        <br>
-        <a th:href="@{/users/register}" class="register">  Chưa có tài khoản? Đăng ký ngay</a>
+   <!-- Nhập Mật khẩu -->
+   <input type="password" name="pass" class="input" placeholder="Nhập mật khẩu" required>
 
-        <!-- Hiển thị thông báo lỗi nếu có -->
-        <div th:if="${error}" class="alert alert-danger mt-3" th:text="${error}"></div>
+   <!-- Nút Đăng Nhập -->
+   <div class="submit">
+    <input type="submit" value="Đăng nhập" class="submit1">
+   </div>
+   <br>
+   <!-- Liên kết Đăng ký -->
+   <a href="/users/register" class="register">Chưa có tài khoản? Đăng ký ngay</a>
+   <a href="/users/forgot-password">Bạn quên mật khẩu?</a>
 
-    </form>
+   <!-- Hiển thị thông báo lỗi nếu có -->
+   <div class="alert alert-danger mt-3" id="error-message" style="display:none;"></div>
+
+  </form>
+ </div>
 </div>
-</div>
+
+<script>
+ // Kiểm tra xem có lỗi từ phía server hay không và hiển thị thông báo
+ let urlParams = new URLSearchParams(window.location.search);
+ let errorMessage = urlParams.get('error');
+ if (errorMessage) {
+     document.getElementById('error-message').textContent = errorMessage;
+     document.getElementById('error-message').style.display = 'block';
+ }
+</script>
 
 </body>
 </html>

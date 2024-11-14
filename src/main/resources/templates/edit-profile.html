@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml"
+      th:replace="~{base::layout(~{::section})}">
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>Chỉnh sửa thông tin</title>
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+ <link rel="stylesheet" href="/css/style.css">
+
+</head>
+<body>
+<section class="edit-profile-section">
+ <div class="container">
+  <h2>Chỉnh sửa thông tin cá nhân</h2>
+
+  <form th:action="@{/users/update-profile}" method="post" th:object="${user}">
+   <div class="form-group">
+    <label for="fullname">Họ và tên:</label>
+    <input type="text" id="fullname" name="fullname" th:value="*{fullname}" required>
+   </div>
+
+   <div class="form-group">
+    <label for="email">Email:</label>
+    <input type="email" id="email" name="email" th:value="*{email}" required>
+   </div>
+
+   <div class="form-group">
+    <label for="phone">Số điện thoại:</label>
+    <input type="text" id="phone" name="phone" th:value="*{phone}" required>
+   </div>
+
+   <div class="form-group">
+    <label for="password">Mật khẩu mới (nếu muốn thay đổi):</label>
+    <input type="password" id="password" name="pass">
+   </div>
+
+   <button type="submit" class="submit-btns">Cập nhật</button>
+  </form>
+
+  <div class="link">
+   <a href="/users">Trở về trang người dùng</a>
+  </div>
+ </div>
+</section>
+</body>
+</html>

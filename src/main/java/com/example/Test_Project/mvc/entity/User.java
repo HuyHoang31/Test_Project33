@@ -2,7 +2,7 @@ package com.example.Test_Project.mvc.entity;
 import jakarta.persistence.*;
 
 import java.util.List;
-import java.util.Set;
+
 @Entity
 @Table(name = "users")
 public class User {
@@ -14,19 +14,20 @@ public class User {
     private String pass;
     private String fullname;
     private String phone;
-
-   @Enumerated(EnumType.STRING)
-   private Role role;
-
+    private String resetCode;
+    private  String role;
     @OneToMany(mappedBy = "user")
     private List<Orders> orders;
-
     public int getUserID() {
         return userID;
     }
 
     public void setUserID(int userID) {
         this.userID = userID;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 
     public String getEmail() {
@@ -61,13 +62,7 @@ public class User {
         this.phone = phone;
     }
 
-//    public Role getRole() {
-//        return role;
-//    }
-//
-//    public void setRole(Role role) {
-//        this.role = role;
-//    }
+
 
     public List<Orders> getOrders() {
         return orders;
@@ -76,4 +71,18 @@ public class User {
     public void setOrders(List<Orders> orders) {
         this.orders = orders;
     }
+
+    public String getResetCode() {
+        return resetCode;
+    }
+
+    public void setResetCode(String resetCode) {
+        this.resetCode = resetCode;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
 }
+

@@ -155,19 +155,19 @@
             updateSelectionSummary();
         }
 
-<!--        function selectMovie(selectElement) {-->
-<!--            selectedMovieId = selectElement.value;-->
-<!--            const selectedMovieName = selectElement.options[selectElement.selectedIndex].text;-->
-<!--            alert(`Bạn đã chọn phim: ${selectedMovieName}`);-->
-<!--            updateSelectionSummary();-->
-<!--        }-->
+        function selectMovie(selectElement) {
+            selectedMovieId = selectElement.value;
+            const selectedMovieName = selectElement.options[selectElement.selectedIndex].text;
+            alert(`Bạn đã chọn phim: ${selectedMovieName}`);
+            updateSelectionSummary();
+        }
 
-<!--        function selectSession(selectElement) {-->
-<!--            selectedShowtimeId = selectElement.value;-->
-<!--            const selectedShowtimeName = selectElement.options[selectElement.selectedIndex].text;-->
-<!--            alert(`Bạn đã chọn suất chiếu: ${selectedShowtimeName}`);-->
-<!--            updateSelectionSummary();-->
-<!--        }-->
+        function selectSession(selectElement) {
+            selectedShowtimeId = selectElement.value;
+            const selectedShowtimeName = selectElement.options[selectElement.selectedIndex].text;
+            alert(`Bạn đã chọn suất chiếu: ${selectedShowtimeName}`);
+            updateSelectionSummary();
+        }
 
         function updateSelectionSummary() {
             const selectedCount = [selectedRoomId, selectedMovieId, selectedShowtimeId].filter(Boolean).length;

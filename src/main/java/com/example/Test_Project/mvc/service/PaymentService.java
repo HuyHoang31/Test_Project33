@@ -31,5 +31,6 @@ public class PaymentService {
     public void deletePayment(int id) {
         paymentRepository.deleteById(id);
     }
+
 }
 

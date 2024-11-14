@@ -2,6 +2,7 @@ package com.example.Test_Project.mvc.controller;
 
 import com.example.Test_Project.mvc.entity.*;
 import com.example.Test_Project.mvc.service.*;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 // import org.springframework.security.crypto.password.PasswordEncoder;
@@ -34,10 +35,16 @@ public class UserController {
     private ChairStatusService chairStatusService;
     @Autowired
     private CategoryService categoryService;
-//    @Autowired
-//    private TicketsService ticketsService;
+    @Autowired
+    private EmailService  emailService;
+
+
     @Autowired
     private OrderService orderService;
+    @Autowired
+    private VNPAYService vnpayService;
+    @Autowired
+    private PaymentService paymentService;
 
     // Hiển thị danh sách phim
     @GetMapping
@@ -58,24 +65,27 @@ public class UserController {
         return "HomePage"; // HomePage hiển thị danh sách phim
     }
 
-    // Hiển thị form đăng ký người dùng mới
+
     @GetMapping("/register")
     public String showRegistrationForm(Model model) {
         model.addAttribute("user", new User());
         return "Register"; // Trả về form đăng ký
     }
 
-    // Xử lý đăng ký người dùng mới
+
     @PostMapping("/register")
     public String registerUser(@ModelAttribute User user, Model model) {
+        // Kiểm tra xem email đã tồn tại chưa
         if (userService.findByEmail(user.getEmail()) == null) {
+            // Mã hóa mật khẩu và lưu người dùng
             userService.saveUser(user);
-            return "redirect:/users/login"; // Chuyển hướng đến trang đăng nhập sau khi đăng ký thành công
+            return "redirect:/users/login";
         } else {
             model.addAttribute("error", "Email đã được sử dụng");
-            return "Register"; // Quay lại trang đăng ký nếu có lỗi
+            return "Register"; //
         }
     }
+
 
     // Hiển thị form đăng nhập
     @GetMapping("/login")
@@ -84,20 +94,124 @@ public class UserController {
         return "Login";
     }
 
-    // Xử lý đăng nhập
     @PostMapping("/login")
     public String loginUser(@RequestParam String email, @RequestParam String pass, HttpSession session, Model model) {
+        // Kiểm tra đăng nhập
         if (userService.checkLogin(email, pass)) {
+            // Đăng nhập thành công, lưu thông tin người dùng vào session
             User loggedInUser = userService.findByEmail(email);
             session.setAttribute("loggedInUserName", loggedInUser.getFullname());
-            session.setAttribute("userId", loggedInUser.getUserID()); // Lưu userId vào session
-            return "redirect:/users"; // Chuyển hướng đến trang chính sau khi đăng nhập
+            session.setAttribute("userId", loggedInUser.getUserID());  // Lưu userID vào session
+
+            if ("ROLE_ADMIN".equals(loggedInUser.getRole())) {
+                return "redirect:/admin";  // Chuyển hướng đến trang admin nếu là admin
+            } else {
+                return "redirect:/users";  // Chuyển hướng đến trang người dùng bình thường
+            }
         } else {
-            model.addAttribute("error", "Sai email hoặc mật khẩu");
-            return "Login"; // Quay lại trang đăng nhập nếu có lỗi
+            // Đăng nhập thất bại, chuyển hướng lại trang đăng nhập và hiển thị lỗi
+            return "redirect:/users/login?error=Sai email hoặc mật khẩu";
         }
     }
-    // Hiển thị trang đặt vé với danh sách thông tin
+
+
+
+
+    // Hiển thị form quên mật khẩu
+    @GetMapping("/forgot-password")
+    public String showForgotPasswordForm(Model model) {
+        model.addAttribute("email", "");
+        return "forgot-password";
+    }
+
+    // Xử lý yêu cầu quên mật khẩu
+    @PostMapping("/forgot-password")
+    public String processForgotPassword(@RequestParam String email, RedirectAttributes redirectAttributes) {
+        User user =userService.findByEmail(email);
+        if (user != null) {
+            userService.sendPasswordResetEmail(email);
+            redirectAttributes.addFlashAttribute("message", "Mã khôi phục đã được gửi đến email của bạn.");
+        } else {
+            redirectAttributes.addFlashAttribute("error", "Email không tồn tại.");
+        }
+        return "redirect:/users/forgot-password";
+    }
+
+
+
+    @GetMapping("/reset-password")
+    public String showResetPasswordForm(@RequestParam("resetCode") String resetCode, Model model) {
+        model.addAttribute("resetCode", resetCode);
+        return "reset-password";
+    }
+
+    // Xử lý đặt lại mật khẩu
+    @PostMapping("/reset-password")
+    public String processResetPassword(@RequestParam String resetCode, @RequestParam String newPassword, Model model) {
+        String email = userService.findEmailByResetCode(resetCode);
+        if (email != null) {
+            userService.updatePassword(email, newPassword);
+            model.addAttribute("message", "Mật khẩu đã được cập nhật thành công.");
+            return "redirect:/users/login";
+        } else {
+            model.addAttribute("error", "Mã khôi phục không hợp lệ.");
+            return "reset-password";
+        }
+    }
+    @GetMapping("/logout")
+    public String logout(HttpSession session) {
+
+        session.invalidate();
+
+
+        return "redirect:/users/login";
+    }
+    // Hiển thị trang chỉnh sửa thông tin người dùng
+    @GetMapping("/edit-profile")
+    public String showEditProfileForm(HttpSession session, Model model) {
+        Integer userId = (Integer) session.getAttribute("userId");
+        if (userId == null) {
+            return "redirect:/users/login";
+        }
+
+        User user = userService.getUserById(userId);
+        model.addAttribute("user", user);
+        return "edit-profile";
+    }
+
+    // Xử lý cập nhật thông tin người dùng
+    @PostMapping("/update-profile")
+    public String updateUserProfile(@ModelAttribute User user, HttpSession session) {
+        Integer userId = (Integer) session.getAttribute("userId");
+        if (userId == null) {
+            return "redirect:/users/login";
+        }
+
+        user.setUserID(userId);
+        userService.updateUser(user);
+        return "redirect:/users";
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     @GetMapping("/tickets/booking")
     public String showBookingForm(HttpSession session, Model model) {
         // Lấy danh sách suất chiếu có sẵn
@@ -112,7 +226,10 @@ public class UserController {
 
         // Lấy danh sách phim đang chiếu
         List<Movie> nowShowingMovies = movieService.getMoviesByStatus("Đang Chiếu");
+        List<Movie> comingSoonMovies = movieService.getMoviesByStatus("Sắp Chiếu");
+
         model.addAttribute("nowShowingMovies", nowShowingMovies);
+        model.addAttribute("comingSoonMovies", comingSoonMovies);
 
         // Lưu thông tin phim và suất chiếu vào session nếu có
         if (!nowShowingMovies.isEmpty()) {
@@ -138,7 +255,6 @@ public class UserController {
 
         return "ticket-booking-form"; // Trả về trang đặt vé
     }
-
 
 
     // Chọn suất chiếu với roomId
@@ -176,11 +292,13 @@ public class UserController {
         model.addAttribute("selectedSeats", new ArrayList<>());
         List<Movie> nowShowingMovies = movieService.getMoviesByStatus("Đang Chiếu");
         List<Movie> comingSoonMovies = movieService.getMoviesByStatus("Sắp Chiếu");
-
+        model.addAttribute("cinemas", cinemaService.getAllCinemas());
         model.addAttribute("nowShowingMovies", nowShowingMovies);
         model.addAttribute("comingSoonMovies", comingSoonMovies);
         return "Tickets-chair"; // Trang hiển thị ghế
     }
+
+    // Phương thức xác nhận đơn hàng
     @GetMapping("/confirm-order")
     public String confirmOrder(
             HttpSession session,
@@ -220,7 +338,6 @@ public class UserController {
         String roomName = "Không có tên phòng"; // Mặc định nếu không tìm thấy
 
         if (room != null) {
-            // Kiểm tra xem cinema có tồn tại không và lấy tên
             if (room.getCinema() != null) {
                 cinemaName = room.getCinema().getName();
             }
@@ -263,11 +380,24 @@ public class UserController {
         model.addAttribute("totalPrice", totalPrice);
         model.addAttribute("movieImage", movie.getImage()); // Thêm ảnh của phim
 
+        // Gửi email xác nhận đơn hàng
+        emailService.sendOrderConfirmationEmail(
+                user.getEmail(),
+                user.getFullname(),
+                movie.getName(),
+                cinemaName,
+                roomName,
+                showTime.getDate() + " " + showTime.getSessions().get(0).getStartTime(),
+                selectedChairs.stream().map(Chair::getChairName).collect(Collectors.joining(", ")),
+                totalPrice
+        );
+        List<Movie> nowShowingMovies = movieService.getMoviesByStatus("Đang Chiếu");
+        List<Movie> comingSoonMovies = movieService.getMoviesByStatus("Sắp Chiếu");
+
+        model.addAttribute("nowShowingMovies", nowShowingMovies);
+        model.addAttribute("comingSoonMovies", comingSoonMovies);
         return "order-confirmation"; // Tên template xác nhận đơn hàng
     }
-
-
-
 
     // Hoàn tất đơn hàng
     @PostMapping("/order/complete")
@@ -283,6 +413,30 @@ public class UserController {
         orderService.saveOrder(order); // Lưu đơn hàng qua dịch vụ
         return "order-success"; // Trả về trang xác nhận hoàn tất đơn hàng
     }
+  // lich sử dơn hàng của người dùng
+  @GetMapping("/order-history")
+  public String showOrderHistory(HttpSession session, Model model) {
+      // Lấy userId từ session
+      Integer userId = (Integer) session.getAttribute("userId");
+      if (userId == null) {
+          return "redirect:/users/login"; // Nếu người dùng chưa đăng nhập, chuyển hướng tới trang đăng nhập
+      }
+
+      // Lấy danh sách đơn hàng của người dùng từ OrderService
+      List<Orders> orders = orderService.getOrdersByUser(userId); // Lấy danh sách đơn hàng theo userId
+      model.addAttribute("orders", orders); // Truyền danh sách đơn hàng vào model
+      List<Payment> payments = paymentService.getAllPayments();
+      model.addAttribute("payments", payments);
+      // Truyền thêm thông tin người dùng vào model
+      User user = userService.getUserById(userId);
+      model.addAttribute("user", user); // Đưa thông tin người dùng vào model
+      List<Movie> nowShowingMovies = movieService.getMoviesByStatus("Đang Chiếu");
+      List<Movie> comingSoonMovies = movieService.getMoviesByStatus("Sắp Chiếu");
+
+      model.addAttribute("nowShowingMovies", nowShowingMovies);
+      model.addAttribute("comingSoonMovies", comingSoonMovies);
+      return "order-history"; // Trả về trang hiển thị lịch sử đơn hàng
+  }
 
     // search movies
     // Tìm kiếm phim theo tên
@@ -291,11 +445,16 @@ public class UserController {
         model.addAttribute("movies", movieService.searchMoviesByName(name));
         model.addAttribute("showtimes", showtimeService.getAllShowtimes());
         model.addAttribute("showtime", new ShowTime());
-        model.addAttribute("movies", movieService.getAllMovies());
         model.addAttribute("cinemas", cinemaService.getAllCinemas());
         model.addAttribute("rooms", roomService.getAllRooms());
+        List<Movie> nowShowingMovies = movieService.getMoviesByStatus("Đang Chiếu");
+        List<Movie> comingSoonMovies = movieService.getMoviesByStatus("Sắp Chiếu");
+
+        model.addAttribute("nowShowingMovies", nowShowingMovies);
+        model.addAttribute("comingSoonMovies", comingSoonMovies);
         return "HomePage";
     }
+
     // Tìm kiếm phim theo ngày
     @GetMapping("/movies/search-by-date")
     public String searchMoviesByDate(@RequestParam("date") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date, Model model) {
@@ -303,13 +462,14 @@ public class UserController {
         model.addAttribute("movies", movies);
         model.addAttribute("showtimes", showtimeService.getAllShowtimes());
         model.addAttribute("showtime", new ShowTime());
-        model.addAttribute("movies", movieService.getAllMovies());
+
         model.addAttribute("cinemas", cinemaService.getAllCinemas());
         model.addAttribute("rooms", roomService.getAllRooms());
         return "HomePage";
     }
+
     @GetMapping("/movies/{id}")
-    public String getMovieDetails(@PathVariable("id") int movieId, Model model ) {
+    public String getMovieDetails(@PathVariable("id") int movieId, Model model) {
         Movie movie = movieService.getMovieById(movieId);
         model.addAttribute("movies", movieService.getAllMovies());
         model.addAttribute("movie", movie);
@@ -320,9 +480,13 @@ public class UserController {
         List<Movie> comingSoonMovies = movieService.getMoviesByStatus("Sắp Chiếu");
         model.addAttribute("nowShowingMovies", nowShowingMovies);
         model.addAttribute("comingSoonMovies", comingSoonMovies);
-
+        List<ShowTime> showTimes = showtimeService.getShowTimesByMovieId(movieId);
+        model.addAttribute("showtimes", showTimes);
+        model.addAttribute("showtimes", showtimeService.getShowTimesByMovieId(movieId)); // Thay thế session bằng showtimes
+        model.addAttribute("categories", categoryService.getAllCategories());
         return "DisplayMovies";
     }
+
     @GetMapping("/movies/view-movies")
     public String getAllViewMovies(@RequestParam(value = "status", defaultValue = "Đang Chiếu") String status, Model model) {
         List<Movie> movies = movieService.getMoviesByStatus(status);
@@ -338,5 +502,39 @@ public class UserController {
         model.addAttribute("comingSoonMovies", comingSoonMovies);
         return "View-Movies";
     }
+
+
+    @GetMapping("/vnpay/payment")
+    public String createPayment(HttpServletRequest request,
+                                @RequestParam("amount") double amount,
+                                @RequestParam("orderInfo") String orderInfo,
+                                Model model) {
+        // Tạo URL thanh toán từ VNPAYService
+        String paymentUrl = vnpayService.createOrder(request, (int) (amount * 100), orderInfo, "http://localhost:8080/users");
+        return "redirect:" + paymentUrl; // Chuyển hướng đến URL thanh toán
+    }
+
+    @GetMapping("/vnpay-payment-return")
+    public String vnpayReturn(HttpServletRequest request, Model model) {
+        int paymentStatus = vnpayService.orderReturn(request);
+        if (paymentStatus == 1) {
+            // Thêm thông tin thanh toán vào model
+            String txnRef = request.getParameter("vnp_TxnRef");
+            double amount = Double.valueOf(request.getParameter("vnp_Amount")) / 100;
+            String bankCode = request.getParameter("vnp_BankCode");
+            String orderInfo = request.getParameter("vnp_OrderInfo");
+            model.addAttribute("status", "Thanh toán thành công");
+            model.addAttribute("txnRef", txnRef);
+            model.addAttribute("amount", amount);
+            model.addAttribute("bankCode", bankCode);
+            model.addAttribute("orderInfo", orderInfo);
+        } else if (paymentStatus == 0) {
+            model.addAttribute("status", "Thanh toán thất bại");
+        } else {
+            model.addAttribute("status", "Có lỗi xảy ra trong quá trình xác minh");
+        }
+        return "payment-success"; // Trả về trang kết quả thanh toán
+    }
+
 
 }

@@ -44,6 +44,105 @@
             margin-left: 220px;
             padding: 20px;
         }
+               /* Tạo kiểu cho phần tiêu đề */
+        #payments h1 {
+            text-align: center;
+            font-size: 28px; /* Tăng kích thước chữ cho tiêu đề */
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        /* Kiểu cho bảng */
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-family: Arial, sans-serif;
+        }
+
+        /* Kiểu cho các ô tiêu đề */
+        .table th {
+            background-color: #4CAF50;
+            color: white;
+            padding: 12px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        /* Kiểu cho các ô dữ liệu */
+        .table td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: center;
+            vertical-align: middle; /* Căn giữa nội dung trong các ô */
+        }
+
+        /* Các dòng lẻ có màu nền khác */
+        .table tr:nth-child(odd) {
+            background-color: #f2f2f2;
+        }
+
+        /* Hiệu ứng khi di chuột qua dòng */
+        .table tr:hover {
+            background-color: #ddd;
+        }
+
+        /* Căn chỉnh cột số tiền và trạng thái */
+        .table td:nth-child(3), /* Cột số tiền */
+        .table td:nth-child(4) /* Cột trạng thái */ {
+            text-align: right;
+        }
+
+        /* Điều chỉnh chiều rộng cột thông tin đơn hàng */
+        .table td:nth-child(6) {
+            text-align: left;
+            word-wrap: break-word;
+            max-width: 250px; /* Giới hạn chiều rộng */
+        }
+
+        /* Điều chỉnh kích thước font */
+        .table th, .table td {
+            font-size: 14px; /* Kích thước font chuẩn */
+        }
+
+        /* Tạo khoảng cách cho bảng */
+        #payments {
+            margin-top: 30px;
+            margin-bottom: 30px;
+        }
+
+        /* Tạo khoảng cách giữa bảng và nội dung xung quanh */
+        .table-container {
+            padding: 20px;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+        }
+
+        /* Điều chỉnh hiển thị ở các màn hình nhỏ */
+        @media (max-width: 768px) {
+            .table th, .table td {
+                font-size: 12px; /* Giảm kích thước font ở màn hình nhỏ */
+                padding: 8px; /* Giảm padding */
+            }
+
+    /* Điều chỉnh chiều rộng cho cột thông tin đơn hàng khi màn hình nhỏ */
+    .table td:nth-child(6) {
+        max-width: 150px;
+    }
+
+    /* Điều chỉnh các cột còn lại để dễ nhìn */
+    .table th, .table td {
+        padding: 8px 5px; /* Giảm khoảng cách giữa các ô */
+    }
+}
+
+         form.form-inline.mb-4 {
+         display :flex;
+
+        }
+        .form-control {
+        width : 50%;
+        }
     </style>
 </head>
 
@@ -68,6 +167,10 @@
                                 onclick="showSection('chairs'); event.preventDefault();">Chair</a></li>
         <li class="nav-item"><a href="#" class="nav-link"
                                 onclick="showSection('rooms'); event.preventDefault();">Rooms</a></li>
+        <li class="nav-item"><a href="#" class="nav-link"
+                                onclick="showSection('orders'); event.preventDefault();">Order</a></li>
+        <li class="nav-item"><a href="#" class="nav-link"
+                                onclick="showSection('payments'); event.preventDefault();">Payment</a></li>
     </ul>
 </div>
 
@@ -279,24 +382,28 @@
         <table class="table table-bordered table-striped">
             <thead>
             <tr>
-                <th>ID</th>
-                <th>Trạng thái</th>
-                <th>Loại</th>
-                <th>Giá</th>
-                <th>Chi tiết</th>
-                <th>Hành động</th>
+                <th>ID Vé</th>
+                <th>Người Đặt</th>
+                <th>Phim</th>
+                <th>Suất Chiếu</th>
+                <th>Ghế</th>
+                <th>Tổng Tiền</th>
+                <th>Trạng Thái</th>
             </tr>
             </thead>
             <tbody>
             <tr th:each="ticket : ${tickets}">
-                <td th:text="${ticket.id}"></td>
-                <td th:text="${ticket.status}"></td>
-                <td th:text="${ticket.type}"></td>
-                <td th:text="${ticket.price}"></td>
-                <td><a th:href="@{'/admin/tickets/' + ${ticket.id}}" class="btn btn-info btn-sm">Chi tiết</a>
+                <td th:text="${ticket.ticketId}"></td>
+                <td th:text="${ticket.user.fullname}"></td>
+                <td th:text="${ticket.movie.name}"></td>
+                <td th:text="${ticket.showTime.date + ' ' + ticket.showTime.session}"></td>
+                <td>
+                    <ul>
+                        <li th:each="chair : ${ticket.chairs}" th:text="${chair.chairName}"></li>
+                    </ul>
                 </td>
-                <td><a th:href="@{'/admin/tickets/delete/' + ${ticket.id}}" class="btn btn-danger btn-sm"
-                       onclick="return confirm('Xác nhận xóa vé này?')">Xóa</a></td>
+                <td th:text="${ticket.totalPrice}"></td>
+                <td th:text="${ticket.status}"></td>
             </tr>
             </tbody>
         </table>
@@ -328,7 +435,54 @@
             </tbody>
         </table>
     </div>
-
+    <div id="orders" class="content-section">
+        <h2>Danh sách đơn hàng</h2>
+        <table  class="table table-bordered table-striped">
+            <thead>
+            <tr>
+                <th>ID Đơn hàng</th>
+                <th>Người dùng</th>
+                <th>Ngày</th>
+                <th>Tổng giá</th>
+                <th>Số lượng</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="order : ${orders}">
+                <td th:text="${order.idOrder}"></td>
+                <td th:text="${order.user.fullname}"></td> <!-- giả sử user có thuộc tính 'name' -->
+                <td th:text="${order.date}"></td>
+                <td th:text="${order.totalPrice}"></td>
+                <td th:text="${order.quantity}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div id="payments" class="content-section">
+        <h1>Danh sách Thanh Toán</h1>
+        <table  class="table table-bordered table-striped">
+            <thead>
+            <tr>
+                <th>Mã giao dịch</th>
+                <th>Thời gian thanh toán</th>
+                <th>Số tiền</th>
+                <th>Phương thức thanh toán</th>
+                <th>Trạng thái</th>
+                <th>Thông tin đơn hàng</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="payment : ${payments}">
+                <td th:text="${payment.paymentId}"></td>
+                <td th:text="${payment.date}"></td>
+                <td th:text="${payment.amount}"></td>
+                <td th:text="${payment.method}"></td>
+                <td th:text="${payment.transactionStatus}"></td>
+                <td th:text="${payment.orderInfo}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
 
 <!-- Bootstrap và JavaScript -->

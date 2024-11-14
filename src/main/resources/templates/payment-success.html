@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"th:replace="~{base::layout(~{::section})}">
+<head>
+    <meta charset="UTF-8">
+
+    <title>Kết Quả Thanh Toán</title>
+    <style>
+        /* Cấu hình chung cho body */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f7fa;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            box-sizing: border-box;
+        }
+
+        /* Container cho nội dung */
+        .container {
+            background-color: white;
+            width: 90%;
+            max-width: 600px;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 32px;
+            color: #3498db;
+            margin-bottom: 20px;
+        }
+
+        /* Thông tin kết quả thanh toán */
+        .status {
+            background-color: #e0f7fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .status h2 {
+            font-size: 24px;
+            color: #16a085;
+            margin-bottom: 10px;
+        }
+
+        .status p {
+            font-size: 18px;
+            margin: 5px 0;
+        }
+
+        /* Button Trở về */
+        .button {
+            display: inline-block;
+            background-color: #3498db;
+            color: white;
+            padding: 12px 30px;
+            text-align: center;
+            font-size: 18px;
+            border-radius: 5px;
+            text-decoration: none;
+            margin-top: 20px;
+            width: 100%;
+        }
+
+        .button:hover {
+            background-color: #2980b9;
+        }
+
+        /* Tạo kiểu đẹp cho các giá trị */
+        span {
+            font-weight: bold;
+        }
+
+        /* Đảm bảo các nội dung trả về có thể căn chỉnh dễ dàng */
+        .order-details {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+        }
+
+        .order-details p {
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+        .black {
+            color: black !important;
+        }
+    </style>
+</head>
+<body>
+<section>
+<div class="container">
+    <h1>Kết Quả Thanh Toán</h1>
+
+    <div th:if="${status}" class="status">
+        <h2 th:text="${status}"></h2>
+
+        <div th:if="${status == 'Thanh toán thành công'}">
+            <div class="order-details">
+                <p>Tên đơn hàng: <span class="black" th:text="${orderInfo}"></span></p>
+                <p>Mã giao dịch: <span class="black" th:text="${txnRef}"></span></p>
+                <p>Số tiền: <span class="black" th:text="${amount} + ' VND'"></span></p>
+                <p>Ngân hàng: <span class="black" th:text="${bankCode}"></span></p>
+            </div>
+        </div>
+    </div>
+
+    <a href="/users" class="button">Trở về</a>
+</div>
+</section>
+</body>
+</html>

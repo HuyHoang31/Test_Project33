@@ -31,4 +31,13 @@ public class ShowtimeService {
         // Ở đây, trả về tất cả các suất chiếu. Có thể điều chỉnh để lọc suất chiếu còn chỗ nếu cần.
         return showtimeRepository.findAll();
     }
+    // Lấy tất cả suất chiếu của phim
+    public List<ShowTime> getShowTimesByMovieId(int movieId) {
+        return showtimeRepository.findByMovie_MovieId(movieId);
+    }
+
+    // Sử dụng phương thức đã cập nhật
+    public List<ShowTime> getShowTimesByCinemaAndMovie(int cinemaId, int movieId) {
+        return showtimeRepository.findByCinema_IdCinemaAndMovie_MovieId(cinemaId, movieId);
+    }
 }

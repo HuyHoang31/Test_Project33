@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml"
+      th:replace="~{base::layout(~{::section})}">
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>Lịch sử đơn hàng của bạn</title>
+ <link rel="stylesheet" href="/css/home.css">
+
+ <style>
+
+ </style>
+</head>
+<body>
+<section>
+<div class="container-order">
+ <h2>Lịch sử đơn hàng của bạn</h2>
+
+<!-- <div class="user-info">-->
+<!--  <h3>Xin chào, <span th:text="${user.fullname}">Người dùng</span></h3>-->
+<!-- </div>-->
+
+ <div class="order-history">
+  <h3>Danh sách đơn hàng</h3>
+  <table class="tables">
+   <thead>
+   <tr>
+    <th>Mã đơn hàng</th>
+    <th>Ngày đặt</th>
+    <th>Phim</th>
+    <th>Số ghế</th>
+    <th>Tổng tiền</th>
+    <!-- <th>Trạng thái</th> -->
+   </tr>
+   </thead>
+   <tbody>
+   <tr th:each="order : ${orders}">
+    <td th:text="${order.idOrder}"></td>
+    <td th:text="${order.date}"></td>
+    <td th:text="${order.movie.name}"></td>
+    <td th:text="${order.quantity}"></td>
+    <td th:text="${order.totalPrice}"></td>
+    <!-- <td th:text="${order.payment.transactionStatus}"></td> -->
+   </tr>
+   </tbody>
+  </table>
+ </div>
+
+ <div class="back-link">
+  <a href="/users">Quay lại trang người dùng</a>
+ </div>
+</div>
+</section>
+</body>
+</html>

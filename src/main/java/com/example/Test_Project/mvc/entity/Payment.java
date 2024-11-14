@@ -10,16 +10,18 @@ import java.util.Date;
 public class Payment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int paymentId;  // Khóa chính
+    private int paymentId; // Khóa chính
 
     private Date date;
-    private String method;
-    private double amount;
-    private String paymentcol;
-
+    private String method; // Phương thức thanh toán (VD: VNPAY)
+    private double amount; // Số tiền
+    private String transactionStatus; // Trạng thái giao dịch (VD: thành công, thất bại)
     @OneToOne
-    @JoinColumn(name = "order_idOrder")
-    private Orders order;
+    @JoinColumn(name = "order_idOrder", referencedColumnName = "idOrder") // Tham chiếu đến khóa chính của Orders
+    private Orders order; // Đảm bảo Orders là một entity và có khóa chính tương ứng
+    private String orderInfo;
+    @Column(name = "txn_ref")
+    private String txnRef; // Tham chiếu giao dịch từ VNPAY
 
     public int getPaymentId() {
         return paymentId;
@@ -53,12 +55,20 @@ public class Payment {
         this.amount = amount;
     }
 
-    public String getPaymentcol() {
-        return paymentcol;
+    public String getTransactionStatus() {
+        return transactionStatus;
     }
 
-    public void setPaymentcol(String paymentcol) {
-        this.paymentcol = paymentcol;
+    public void setTransactionStatus(String transactionStatus) {
+        this.transactionStatus = transactionStatus;
+    }
+
+    public String getTxnRef() {
+        return txnRef;
+    }
+
+    public void setTxnRef(String txnRef) {
+        this.txnRef = txnRef;
     }
 
     public Orders getOrder() {
@@ -67,5 +77,13 @@ public class Payment {
 
     public void setOrder(Orders order) {
         this.order = order;
+    }
+
+    public String getOrderInfo() {
+        return orderInfo;
+    }
+
+    public void setOrderInfo(String orderInfo) {
+        this.orderInfo = orderInfo;
     }
 }

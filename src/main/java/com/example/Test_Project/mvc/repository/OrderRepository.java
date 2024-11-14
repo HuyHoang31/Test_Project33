@@ -10,4 +10,7 @@ import java.util.List;
 public interface OrderRepository extends JpaRepository<Orders, Integer> {
     List<Orders> findByUser(User user);
     List<Orders>findAll();
+    List<Orders> findByUser_userID(int userID);
+//    // Phương thức tìm đơn hàng theo txnRef
+//    Orders findByTxnRef(String txnRef);
 }

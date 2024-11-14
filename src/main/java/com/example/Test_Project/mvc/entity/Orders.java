@@ -20,8 +20,7 @@ public class    Orders {
     @JoinColumn(name = "user_id", nullable = false)
     private User user; // Quan hệ với người dùng
 
-    @ManyToOne
-    @JoinColumn(name = "payment_id", nullable = true) // Làm cho nó có thể null nếu bạn muốn
+    @OneToOne(mappedBy = "order") // Thiết lập quan hệ với Payment
     private Payment payment;
 
 
@@ -34,26 +33,30 @@ public class    Orders {
     @Column(name = "quantity", nullable = false)
     private int quantity; // Số lượng vé
 
-
-    @OneToMany(mappedBy = "order")
-    private List<Chair> chairs; // Quan hệ với ghế
-
-    public List<Chair> getChairs() {
-        return chairs;
-    }
-
-
     @ManyToOne
     @JoinColumn(name = "movie_Id", nullable = false)
     private Movie movie; // Quan hệ với thanh toán
     @ManyToOne
     @JoinColumn(name = "showTime_Id", nullable = false)
-    private ShowTime showTime; // Quan hệ với thanh toán
-
+    private ShowTime showTime;
+    @OneToMany(mappedBy = "order")
+    private List<Chair> chairs; // Quan hệ với ghế
+    private String status;
+    public List<Chair> getChairs() {
+        return chairs;
+    }
     public void setChairs(List<Chair> chairs) {
         this.chairs = chairs;
     }
     // Getters and Setters
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
     public int getIdOrder() {
         return idOrder;

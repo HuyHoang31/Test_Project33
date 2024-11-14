@@ -40,7 +40,7 @@
                                         <a th:href="@{/users/movies/{id}(id=${movie.movieId})}">
                                             <img th:src="@{/uploads/{filename}(filename=${movie.image})}" alt="Hình ảnh phim">
                                         </a>
-                                        <h2 th:text="${movie.name}"></h2>
+                                        <h2 class="name-tiles" th:text="${movie.name}"></h2>
                                     </div>
                                 </div>
                             </li>
@@ -53,7 +53,7 @@
                                         <a th:href="@{/users/movies/{id}(id=${movie.movieId})}">
                                             <img th:src="@{/uploads/{filename}(filename=${movie.image})}" alt="Hình ảnh phim">
                                         </a>
-                                        <h2 th:text="${movie.name}"></h2>
+                                        <h2 class="name-tiles" th:text="${movie.name}"></h2>
                                     </div>
                                 </div>
                             </li>
@@ -78,8 +78,9 @@
                     </li>
                     <li class="header_li"><a href="" class="header_link">Rạp/Giá Vé</a>
                         <ul class="ul-socialss">
-                            <li class="ul-item"><a href="" class="a-item">Ưu Đãi</a></li>
-                            <li class="ul-item"><a href="" class="a-item">Phim Hay Hàng Tháng</a></li>
+                            <li class="ul-item" th:each="cinema : ${cinemas}">
+                                <a href="#" class="a-item" th:text="${cinema.name}"></a> <!-- Hiển thị tên rạp -->
+                            </li>
 
                         </ul>
                     </li>
@@ -92,8 +93,7 @@
                     <input class="input-search"   type="text" name="name">
                     <button class="btn-submit" type="submit">
                         <svg class="svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-                            <path
-                                    d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z" />
+                            <path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z" />
                         </svg>
                     </button>
 
@@ -102,18 +102,16 @@
                     <div th:if="${session.loggedInUserName != null}">
                         <!-- Nếu người dùng đã đăng nhập -->
                         <span class="user-name" th:text="'Xin chào, ' + ${session.loggedInUserName}"></span>
-                        <ul class="dropdown-menu" id="userDropdown">
-                            <li><a href="/profile" class="dropdown-item">Tài Khoản</a></li>
-                            <li><a href="/history" class="dropdown-item">Lịch Sử</a></li>
-
-                            <a href="/logout" class="dropdown-item">Đăng Xuất</a>
+                        <ul class="dropdown-menu" id="userDropdown" style="display: none;">
+                            <li><a href="/users/edit-profile" class="dropdown-item">Tài Khoản</a></li>
+                            <li><a href="/users/order-history" class="dropdown-item">Lịch Sử Đơn Hàng</a></li>
+                            <li><a href="/users/logout" class="dropdown-item">Đăng Xuất</a></li>
                         </ul>
                     </div>
 
                     <div th:if="${session.loggedInUserName == null}">
                         <!-- Nếu người dùng chưa đăng nhập -->
-                        <a href="/users/login" class="header_link">Đăng Nhập / Đăng Kí</a>
-
+                        <a href="/users/login" class="header_link">Đăng Nhập</a>
                     </div>
                 </div>
 
@@ -192,5 +190,29 @@
 
 </div>
 </div>
+<script>
+
+    function toggleDropdown() {
+        var dropdown = document.getElementById("userDropdown");
+
+        // Toggle display of the dropdown menu
+        if (dropdown.style.display === "none" || dropdown.style.display === "") {
+            dropdown.style.display = "block";
+        } else {
+            dropdown.style.display = "none";
+        }
+    }
+
+    // Close dropdown if user clicks outside of the menu
+    window.onclick = function(event) {
+        var dropdown = document.getElementById("userDropdown");
+        if (!event.target.matches('.user-info') && !event.target.matches('.user-name')) {
+            if (dropdown.style.display === "block") {
+                dropdown.style.display = "none";
+            }
+        }
+    }
+</script>
+
 </body>
 </html>

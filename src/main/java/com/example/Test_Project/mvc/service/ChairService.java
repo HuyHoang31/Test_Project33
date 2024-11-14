@@ -1,6 +1,7 @@
 package com.example.Test_Project.mvc.service;
 
 import com.example.Test_Project.mvc.entity.Chair;
+import com.example.Test_Project.mvc.entity.Ticket;
 import com.example.Test_Project.mvc.repository.ChairRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,6 +35,9 @@ public class ChairService {
     // Phương thức mới để lấy ghế theo danh sách ID
     public List<Chair> getAllChairsByIds(List<Integer> ids) {
         return chairRepository.findByIdchairIn(ids);
+    }
+    public List<Chair> getChairsByTicket(Ticket ticket) {
+        return chairRepository.findByTicket(ticket); // Lấy ghế theo vé
     }
 }
 

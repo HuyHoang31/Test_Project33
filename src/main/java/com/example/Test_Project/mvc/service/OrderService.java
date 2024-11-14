@@ -31,5 +31,11 @@ public class OrderService {
     public void deleteOrder(int id) {
         orderRepository.deleteById(id);
     }
-
+    public List<Orders> getOrdersByUser(int userID) {
+        return orderRepository.findByUser_userID(userID); // Tìm tất cả đơn hàng của người dùng trong database
+    }
+//    // Phương thức tìm đơn hàng theo txnRef
+//    public Orders getOrderByTxnRef(String txnRef) {
+//        return orderRepository.findByTxnRef(txnRef); // Truy vấn đơn hàng theo txnRef
+//    }
 }

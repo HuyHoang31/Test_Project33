@@ -26,6 +26,17 @@ public class Chair {
     @ManyToOne
     @JoinColumn(name = "order_id") // Thêm ánh xạ này
     private Orders order; // Liên kết đến đơn hàng
+    @ManyToOne
+    @JoinColumn(name = "ticket_id")
+    private Ticket ticket;
+
+    public Ticket getTicket() {
+        return ticket;
+    }
+
+    public void setTicket(Ticket ticket) {
+        this.ticket = ticket;
+    }
 
     public Orders getOrder() {
         return order;

@@ -54,8 +54,8 @@ a{
 width: 293px;
 }
 .content{
-    width: 100%;
-    height: 76%;
+    width: 90%;
+    height: 82%;
     top:20px ;
     bottom: 0;
     left: 0;
@@ -85,7 +85,9 @@ opacity: 1;
     color: black;
 }
 .header_link {
-text-decoration: none !important ;
+    text-decoration: none !important ;
+    margin: 0 7px;
+    font-size: 16px;
 }
 .img_navar img{
     width: 150px;
@@ -113,7 +115,7 @@ text-decoration: none !important ;
     margin: 50px;
 }
 .svg {
-    width: 45px;
+    width: 43px;
     padding: 0 10px;
 }
 .input-search {
@@ -124,10 +126,7 @@ text-decoration: none !important ;
         outline: none;
 
 }
-.btn-submit{
-    border: none;
-    background-color: white;
-}
+
 
 .info{
 color :back;
@@ -432,18 +431,14 @@ padding: 10px;
     justify-content: space-between;
     margin: 0 10px;
 }
-.ul-list {
-    padding: 20px 0;
-}
+
 .ul-tiltle {
     font-size: 20px;
 }
 .div-img {
     width: 46%;
 }
-.div-img img {
-    width: 123px;
-}
+
 
 
 
@@ -780,26 +775,8 @@ color : black;
 .image {
 width: 293px;
 }
-.content{
-    width: 100%;
-    height: 76%;
-    top:20px ;
-    bottom: 0;
-    left: 0;
-    border-radius: 5px;
-    position: absolute;
-    background:rgba(0,0,0,0.6);
-    display: flex;
-    padding: 10px 0;
-    justify-content:center ;
-    align-items: center;
-    flex-direction: column;
-    opacity: 0;
-    transition: 0.6s;
-}
-.content:hover{
-opacity: 1;
-}
+
+
 .bt{
     color: white;
 }
@@ -839,23 +816,20 @@ text-decoration: none !important ;
     flex-wrap: wrap;
     margin: 50px;
 }
-.svg {
-    width: 45px;
-    padding: 0 10px;
-}
+
 .input-search {
-    border: 1px solid;
-        border-radius: 5px;
-        width: 250px;
-        padding: 0 5px;
-        outline: none;
-
-}
-.btn-submit{
-    border: none;
-    background-color: white;
+    border: 1px solid !important;
+    border-radius: 5px  !important;
+    width: 250px  !important;
+    padding: 0 5px  !important;
+    outline: none  !important;
+    height : 40px;
 }
 
+.btn-submit {
+    background-color :#205AA7 !important;
+    width : 80px !important;
+}
 .img_container{
     width: 100%;
     border-radius: 5px;
@@ -1103,30 +1077,44 @@ padding: 10px;
 .header_li:hover .ul-socialss {
     display: block;
 }
-.ul-form {
-    width: 700px;
-    background-color: #FFFF;
-    position: absolute;
-    z-index: 100;
-    top: 40px;
-    left: 0;
-    border: 1px solid #737373 ;
-    border-radius: 10px;
-    box-shadow: #F5F5f5;
-    display: none;
+
+
+.name-tiles {
+    font-size: 13px;
+ }
+/* Áp dụng cho các lớp danh sách */
+.ul-social, .ul-socials, .ul-socialss {
+    max-height: 300px; /* Chiều cao tối đa cho menu */
+    overflow-y: auto; /* Tự động hiển thị thanh cuộn khi cần */
+    overflow-x: hidden; /* Ẩn thanh cuộn ngang nếu không cần thiết */
 }
-.ul-social ,.ul-socials ,.ul-socialss {
-    width: 200px;
-    background-color: #FFFF;
-    position: absolute;
-    z-index: 100;
-    top: 28px;
-    left: 0;
-    z-index: 100;
-    border: 1px solid #737373 ;
-    border-radius: 10px;
-    display: none;
+
+/* Tùy chỉnh thanh cuộn cho WebKit (Chrome, Safari, Edge) */
+.ul-socialss::-webkit-scrollbar,
+.ul-social::-webkit-scrollbar,
+.ul-socials::-webkit-scrollbar {
+    width: 8px; /* Độ rộng của thanh cuộn dọc */
 }
+
+.ul-socialss::-webkit-scrollbar-thumb,
+.ul-social::-webkit-scrollbar-thumb,
+.ul-socials::-webkit-scrollbar-thumb {
+    background-color: #888; /* Màu sắc của thanh cuộn */
+    border-radius: 4px; /* Bo góc cho thanh cuộn */
+}
+
+.ul-socialss::-webkit-scrollbar-thumb:hover,
+.ul-social::-webkit-scrollbar-thumb:hover,
+.ul-socials::-webkit-scrollbar-thumb:hover {
+    background-color: #555; /* Màu sắc của thanh cuộn khi hover */
+}
+
+/* Tùy chỉnh thanh cuộn cho Firefox */
+.ul-social, .ul-socials, .ul-socialss {
+    scrollbar-width: thin; /* Kiểu dáng thanh cuộn */
+    scrollbar-color: #888 #f1f1f1; /* Màu sắc thanh cuộn và nền */
+}
+
 .ul-item {
     list-style: none;
     padding: 10px 0;
@@ -1138,6 +1126,7 @@ padding: 10px;
 }
 .ul-list {
     padding: 20px 0;
+    list-style: none;
 }
 .ul-tiltle {
     font-size: 20px;
@@ -1146,7 +1135,7 @@ padding: 10px;
     width: 46%;
 }
 .div-img img {
-    width: 123px;
+    width: 107px;
 }
 
 
@@ -1341,7 +1330,7 @@ td {
 }
 
 button {
-    width: 50px;
+    width: 150px;
      height: 44px;
      border: none;
      border-radius: 10px;
@@ -1361,3 +1350,441 @@ button {
 }
 
 
+.center {
+   display: flex;
+   justify-content: center;
+   padding: 58p
+}
+.center-name {
+   font-size :36px;
+   padding : 20px 0;
+}
+.ps span {
+  color : black;
+}
+.btn {
+width: 140px !important;
+
+}
+/* Style for the user info dropdown */
+.user-info {
+    position: relative;
+    cursor: pointer;
+}
+
+.dropdown-menu {
+    position: absolute;
+    top: 30px;
+    right: 0;
+    list-style-type: none;
+    padding: 0;
+    background-color: white;
+    border: 1px solid #ccc;
+    display: none;
+    z-index: 1000; /* Make sure dropdown is on top */
+}
+
+.dropdown-item {
+    padding: 10px 15px;
+    text-decoration: none;
+    color: black;
+    display: block;
+}
+
+.dropdown-item:hover {
+    background-color: #f0f0f0;
+}
+
+ /* Basic styling for the container */
+ .edit-profile-section {
+     font-family: Arial, sans-serif;
+     background-color: #f4f4f9;
+     padding: 20px;
+     margin-top: 20px;
+ }
+
+ .container {
+     max-width: 600px;
+     margin: 0 auto;
+     background-color: white;
+     padding: 30px;
+     border-radius: 8px;
+     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+ }
+
+ h2 {
+     text-align: center;
+     margin-bottom: 30px;
+     color: #333;
+ }
+
+ .form-group {
+     margin-bottom: 20px;
+ }
+
+ label {
+     display: block;
+     font-weight: bold;
+     margin-bottom: 8px;
+     color: #333;
+ }
+
+ input[type="text"], input[type="email"], input[type="password"] {
+     width: 100%;
+     padding: 12px;
+     border: 1px solid #ddd;
+     border-radius: 4px;
+     font-size: 16px;
+     color: #333;
+ }
+
+ input[type="text"]:focus, input[type="email"]:focus, input[type="password"]:focus {
+     border-color: #4CAF50;
+     outline: none;
+ }
+
+ button.submit-btns {
+     width: 100%;
+     padding: 14px;
+     background-color: #4CAF50;
+     border: none;
+     border-radius: 4px;
+     color: white;
+     font-size: 16px;
+     cursor: pointer;
+     transition: background-color 0.3s ease;
+ }
+
+ button.submit-btns:hover {
+     background-color: #45a049;
+ }
+
+ .link {
+     text-align: center;
+     margin-top: 20px;
+ }
+
+ .link a {
+     color: #4CAF50;
+     text-decoration: none;
+     font-size: 16px;
+ }
+
+ .link a:hover {
+     text-decoration: underline;
+ }
+/* Basic styling for the container */
+.edit-profile-section {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f9;
+    padding: 20px;
+    margin-top: 20px;
+}
+
+.container {
+    max-width: 600px;
+    margin: 0 auto;
+    background-color: white;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 30px;
+    color: #333;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 8px;
+    color: #333;
+}
+
+input[type="text"], input[type="email"], input[type="password"] {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+    color: #333;
+}
+
+input[type="text"]:focus, input[type="email"]:focus, input[type="password"]:focus {
+    border-color: #4CAF50;
+    outline: none;
+}
+
+button.submit-btn {
+    width: 100%;
+    padding: 14px;
+    background-color: #4CAF50;
+    border: none;
+    border-radius: 4px;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button.submit-btn:hover {
+    background-color: #45a049;
+}
+
+.link {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.link a {
+    color: #4CAF50;
+    text-decoration: none;
+    font-size: 16px;
+}
+
+.link a:hover {
+    text-decoration: underline;
+}
+/* edit-profile */
+.edit-profile-section {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f9;
+    padding: 20px;
+    margin-top: 20px;
+}
+
+.container {
+    width: 694px;
+    height: 655px;
+    margin: 0 auto;
+    background-color: white;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 30px;
+    color: #333;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 8px;
+    color: #333;
+}
+
+input[type="text"], input[type="email"], input[type="password"] {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+    color: #333;
+}
+
+input[type="text"]:focus, input[type="email"]:focus, input[type="password"]:focus {
+    border-color: #4CAF50;
+    outline: none;
+}
+
+button.submit-btn {
+    width: 100%;
+    padding: 14px;
+    background-color: #4CAF50;
+    border: none;
+    border-radius: 4px;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button.submit-btn:hover {
+    background-color: #45a049;
+}
+
+.link {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.link a {
+    color: #4CAF50;
+    text-decoration: none;
+    font-size: 16px;
+}
+
+.link a:hover {
+    text-decoration: underline;
+}
+
+
+/* Đặt các kiểu cơ bản cho toàn bộ trang */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f9;
+}
+
+.container {
+    width: 80%;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    margin-top: 30px;
+}
+
+/* Tiêu đề */
+h2 {
+    text-align: center;
+    color: #333;
+}
+
+/* Thông tin người dùng */
+.user-info {
+    margin-bottom: 20px;
+    font-size: 1.2em;
+    color: #555;
+}
+
+/* Phần lịch sử đơn hàng */
+.order-history {
+    margin-top: 30px;
+}
+
+.order-history h3 {
+    text-align: center;
+    color: #007bff;
+}
+
+/* Định dạng bảng đơn hàng */
+.tables {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+
+.tables th {
+    background-color: #f1f1f1;
+    font-weight: bold;
+    color: #333;
+}
+
+.tables tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.tables tr:hover {
+    background-color: #f1f1f1;
+}
+
+/* Định dạng các liên kết quay lại */
+.back-link {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.back-link a {
+    font-size: 1.2em;
+    color: #007bff;
+    text-decoration: none;
+}
+
+.back-link a:hover {
+    text-decoration: underline;
+}
+/* Đặt các kiểu cơ bản cho toàn bộ trang */
+
+
+  .container-order {
+      width: 100%;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #fff;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+      margin-top: 30px;
+  }
+
+  /* Tiêu đề */
+  h2 {
+      text-align: center;
+      color: #333;
+  }
+
+  /* Thông tin người dùng */
+  .user-info {
+      margin-bottom: 20px;
+      font-size: 1.2em;
+      color: #555;
+  }
+
+  /* Phần lịch sử đơn hàng */
+  .order-history {
+      margin-top: 30px;
+  }
+
+  .order-history h3 {
+      text-align: center;
+      color: #007bff;
+  }
+
+  /* Định dạng bảng đơn hàng */
+ .tables {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+  }
+
+.tables th, .tables td {
+      padding: 12px;
+      text-align: left;
+      border: 1px solid #ddd;
+  }
+
+.tables th {
+      background-color: #f1f1f1;
+      font-weight: bold;
+      color: #333;
+  }
+
+  .tables tr:nth-child(even) {
+      background-color: #f9f9f9;
+  }
+
+  .tables tr:hover {
+      background-color: #f1f1f1;
+  }
+
+  /* Định dạng các liên kết quay lại */
+  .back-link {
+      margin-top: 20px;
+      text-align: center;
+  }
+
+  .back-link a {
+      font-size: 1.2em;
+      color: #007bff;
+      text-decoration: none;
+  }
+
+  .back-link a:hover {
+      text-decoration: underline;
+  }

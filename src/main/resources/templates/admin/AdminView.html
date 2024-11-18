@@ -186,7 +186,7 @@
                 <th>Email</th>
                 <th>Full Name</th>
                 <th>Phone</th>
-<!--                <th>Role</th>-->
+                <th>Role</th>
             </tr>
             </thead>
             <tbody>
@@ -195,7 +195,7 @@
                 <td th:text="${user.email}"></td>
                 <td th:text="${user.fullname}"></td>
                 <td th:text="${user.phone}"></td>
-<!--                <td th:text="${user.role}"></td>-->
+                <td th:text="${user.role}"></td>
             </tr>
             </tbody>
         </table>
@@ -204,6 +204,7 @@
     <!-- Movies Section -->
     <div id="movies" class="content-section">
         <h2 class="text-center">Danh Sách Phim</h2>
+        <a href="/admin/movies/add" class="btn btn-primary mt-3">Thêm Phim Mới</a>
         <form th:action="@{/admin/movies/search}" method="get" class="form-inline mb-4">
             <input type="text" name="name" class="form-control mr-2" placeholder="Tìm kiếm theo tên phim">
             <button type="submit" class="btn btn-primary">Tìm kiếm</button>
@@ -243,13 +244,13 @@
                 <td th:text="${movie.status}"></td>
                 <td th:text="${movie.category.categoryName}"></td>
                 <td>
-                    <a th:href="@{/movies/edit/{id}(id=${movie.movieId})}" class="btn btn-warning">Sửa</a>
-                    <a th:href="@{/movies/delete/{id}(id=${movie.movieId})}" class="btn btn-danger" th:onclick="'return confirm(\'Xóa phim này?\')'">Xóa</a>
+                    <a th:href="@{/admin/movies/edit/{id}(id=${movie.movieId})}" class="btn btn-warning">Sửa</a>
+                    <a th:href="@{/admin/movies/delete/{id}(id=${movie.movieId})}" class="btn btn-danger" th:onclick="'return confirm(\'Xóa phim này?\')'">Xóa</a>
                 </td>
             </tr>
             </tbody>
         </table>
-        <a href="/admin/movies/add" class="btn btn-primary mt-3">Thêm Phim Mới</a>
+
     </div>
 
     <!-- Categories Section -->
@@ -269,7 +270,7 @@
                 <td th:text="${category.categoryName}"></td>
                 <td><a th:href="@{/categories/edit/{id}(id=${category.categoryId})}"
                        class="btn btn-warning">Sửa</a><a
-                        th:href="@{/categories/delete/{id}(id=${category.categoryId})}" class="btn btn-danger"
+                        th:href="@{/admin/categories/delete/{id}(id=${category.categoryId})}" class="btn btn-danger"
                         th:onclick="'return confirm(\'Xóa danh mục này?\')'">Xóa</a></td>
             </tr>
             </tbody>
@@ -348,6 +349,7 @@
     <!-- Chair Section -->
     <div id="chairs" class="content-section">
         <h2>Danh sách ghế ngồi</h2>
+        <a th:href="@{/admin/chairs/add}" class="btn btn-primary">Thêm ghế mới</a>
         <table class="table table-bordered table-striped">
             <thead>
             <tr>
@@ -373,7 +375,7 @@
             </tr>
             </tbody>
         </table>
-        <a th:href="@{/admin/chairs/add}" class="btn btn-primary">Thêm ghế mới</a>
+
     </div>
 
     <!-- Tickets Section -->

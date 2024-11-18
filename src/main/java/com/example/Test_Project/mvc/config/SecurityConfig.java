@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -52,10 +53,13 @@ public class SecurityConfig {
                         .requestMatchers("/**").permitAll())
                 .formLogin(form->form.loginPage("/users/login")
                         .loginProcessingUrl("/users/login")
-                        .defaultSuccessUrl("/")
+                        .defaultSuccessUrl("/users")
                         .failureHandler(authenticationFailureHandler)
                         .successHandler(authenticationSuccessHandler()))
-                .logout(logout->logout.permitAll());
+                .logout(logout -> logout.permitAll())
+                .sessionManagement(session -> session
+                        .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
+                );
 
         return http.build();
     }

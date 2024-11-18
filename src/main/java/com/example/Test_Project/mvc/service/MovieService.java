@@ -24,8 +24,10 @@ public class MovieService {
     public List<Movie> searchMoviesByName(String name) {
         return movieRepository.findByNameContaining(name);
     }
-    public List<Movie> searchMoviesByDate(LocalDate date) {
-        return movieRepository.findByShowtimesDate(date);
+
+
+    public List<Movie> searchMoviesByCriteria(String name, String author, Integer category, LocalDate date) {
+        return movieRepository.findMoviesByCriteria(name, author, category, date);
     }
     public Movie getMovieById(int id) {
         return movieRepository.findById(id).orElse(null);

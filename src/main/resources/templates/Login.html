@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
  <meta charset="UTF-8">
  <title>Đăng Nhập</title>
@@ -10,38 +10,25 @@
 <div class="main">
  <div class="full_form">
   <h2 class="name">Đăng Nhập</h2>
-  <form action="/users/login" method="post">
-   <!-- Nhập Email -->
-   <input type="email" name="email" class="input" placeholder="Nhập email" required>
+  <!-- Form login với cấu hình Spring Security mặc định cho các tên trường là 'username' và 'password' -->
+  <form th:action="@{/users/login}" method="post">
+   <!-- Trường nhập email đóng vai trò là username -->
+   <input type="text" class="input" name="username" placeholder="Nhập email" required>
+   <!-- Trường nhập mật khẩu -->
+   <input type="password" class="input" name="password" placeholder="Nhập mật khẩu" required>
 
-   <!-- Nhập Mật khẩu -->
-   <input type="password" name="pass" class="input" placeholder="Nhập mật khẩu" required>
-
-   <!-- Nút Đăng Nhập -->
    <div class="submit">
     <input type="submit" value="Đăng nhập" class="submit1">
    </div>
    <br>
-   <!-- Liên kết Đăng ký -->
-   <a href="/users/register" class="register">Chưa có tài khoản? Đăng ký ngay</a>
-   <a href="/users/forgot-password">Bạn quên mật khẩu?</a>
-
+   <!-- Đường dẫn tới trang đăng ký và quên mật khẩu -->
+   <a th:href="@{/users/register}" class="register">Chưa có tài khoản? Đăng ký ngay</a>
+   <a th:href="@{/users/forgot-password}">Bạn quên mật khẩu?</a>
    <!-- Hiển thị thông báo lỗi nếu có -->
-   <div class="alert alert-danger mt-3" id="error-message" style="display:none;"></div>
-
+   <div th:if="${param.error}" class="alert alert-danger mt-3" th:text="'Thông tin đăng nhập không chính xác. Vui lòng thử lại.'"></div>
   </form>
  </div>
 </div>
-
-<script>
- // Kiểm tra xem có lỗi từ phía server hay không và hiển thị thông báo
- let urlParams = new URLSearchParams(window.location.search);
- let errorMessage = urlParams.get('error');
- if (errorMessage) {
-     document.getElementById('error-message').textContent = errorMessage;
-     document.getElementById('error-message').style.display = 'block';
- }
-</script>
 
 </body>
 </html>

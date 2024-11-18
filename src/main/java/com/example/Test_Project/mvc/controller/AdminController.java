@@ -158,14 +158,14 @@
             }
 
             movieService.saveMovie(movie);
-            return "redirect:/admin/movies";
+            return "redirect:/admin";
         }
 
 
         @GetMapping("/movies/delete/{id}")
         public String deleteMovie(@PathVariable int id) {
             movieService.deleteMovie(id);
-            return "redirect:/admin/movies";
+            return "redirect:/admin";
         }
     //    // Cinema Management
     //    @GetMapping("/cinemas")

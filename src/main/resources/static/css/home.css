@@ -6,7 +6,7 @@
 }
 a{
   text-decoration: none;
-   color: #black;
+   color: black;
 }
 .header{
     margin: 40px 0;
@@ -421,13 +421,40 @@ padding: 10px;
     position: absolute;
     left: 17px;
     top: -33px;
+    max-height: 300px; /* Limit the dropdown height */
+    overflow-y: auto; /* Enable scrolling */
+    border-radius: 5px;
 }
+
+
+/* Custom scrollbar styles */
+.ul-socialss::-webkit-scrollbar {
+    width: 8px;
+}
+
+/* Styling the scrollbar thumb (the draggable part) */
+.ul-socialss::-webkit-scrollbar-thumb {
+    background-color: #3498db;
+    border-radius: 10px;
+}
+
+/* Hover effect for the scrollbar thumb */
+.ul-socialss::-webkit-scrollbar-thumb:hover {
+    background-color: #2980b9;
+}
+
+/* Styling the scrollbar track */
+.ul-socialss::-webkit-scrollbar-track {
+    background-color: #f1f1f1;
+}
+
 .ul-item {
     list-style: none;
     padding: 10px 0;
 }
 .div-item {
     display: flex;
+    flex-wrap : wrap;
     justify-content: space-between;
     margin: 0 10px;
 }
@@ -436,12 +463,14 @@ padding: 10px;
     font-size: 20px;
 }
 .div-img {
-    width: 46%;
+    width: 25%;
 }
 
 
 
-
+.black {
+color : black !important;
+}
 /* Nội dung đặt vé */
 .booking-container {
     display: flex;
@@ -1131,15 +1160,61 @@ padding: 10px;
 .ul-tiltle {
     font-size: 20px;
 }
-.div-img {
-    width: 46%;
-}
+
 .div-img img {
     width: 107px;
 }
 
 
+select {
+    width: 100%;
+    word-wrap: normal;
+    height: 40px;
 
+    font-size: 16px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+
+    outline : none;
+    background-color: #f9f9f9;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+}
+
+/* Add custom styling for the dropdown arrow */
+select::-ms-expand {
+    display: none;
+}
+
+select {
+    background: url('data:image/svg+xml;charset=US-ASCII,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 5"%3E%3Cpath fill="%23a9a9a9" d="M5 5L0 0h10z"/%3E%3C/svg%3E') no-repeat right 10px center;
+    background-size: 10px 5px;
+}
+
+/* Style the dropdown when opened */
+select:focus {
+    border-color: #3498db;
+    outline: none;
+}
+
+/* Style the scrollbar for the dropdown */
+select::-webkit-scrollbar {
+    width: 8px; /* Adjust the width of the scrollbar */
+}
+
+select::-webkit-scrollbar-thumb {
+    background-color: #3498db;
+    border-radius: 10px;
+}
+
+select::-webkit-scrollbar-thumb:hover {
+    background-color: #2980b9;
+}
+
+select::-webkit-scrollbar-track {
+    background-color: #f1f1f1;
+}
 .content-section {
    display: none;
    /* Ẩn nội dung mặc định */

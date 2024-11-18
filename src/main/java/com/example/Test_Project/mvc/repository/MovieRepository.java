@@ -13,7 +13,15 @@ import java.util.List;
 public interface MovieRepository extends JpaRepository<Movie, Integer>{
     List<Movie> findByNameContaining(String name); // Tìm kiếm phim theo tên
 
-    @Query("SELECT m FROM Movie m JOIN m.showtime s WHERE s.date = :date")
-    List<Movie> findByShowtimesDate(@Param("date") LocalDate date);
+    @Query("SELECT m FROM Movie m " +
+            "WHERE (:name IS NULL OR m.name LIKE %:name%) " +
+            "AND (:author IS NULL OR m.author LIKE %:author%) " +
+            "AND (:category IS NULL OR m.category.categoryId = :category) " +
+            "AND (:date IS NULL OR element(m.showtime).date = :date)")
+    List<Movie> findMoviesByCriteria(@Param("name") String name,
+                                     @Param("author") String author,
+                                     @Param("category") Integer category,
+                                     @Param("date") LocalDate date);
+
     List<Movie> findByStatus(String status);
 }

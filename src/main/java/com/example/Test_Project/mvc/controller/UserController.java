@@ -95,12 +95,14 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public String loginUser(@RequestParam String email, @RequestParam String pass, HttpSession session, Model model) {
+    public String loginUser(@RequestParam String email, @RequestParam String pass, HttpSession session ,
+                            Model model) {
         // Kiểm tra đăng nhập
         if (userService.checkLogin(email, pass)) {
             // Đăng nhập thành công, lưu thông tin người dùng vào session
             User loggedInUser = userService.findByEmail(email);
             session.setAttribute("loggedInUserName", loggedInUser.getFullname());
+
             session.setAttribute("userId", loggedInUser.getUserID());  // Lưu userID vào session
 
             if ("ROLE_ADMIN".equals(loggedInUser.getRole())) {
@@ -454,19 +456,24 @@ public class UserController {
         model.addAttribute("comingSoonMovies", comingSoonMovies);
         return "HomePage";
     }
+//    @GetMapping("/search")
+//    public String searchMovies(@RequestParam(required = false) String name,
+//                               @RequestParam(required = false) String author,
+//                               @RequestParam(required = false) Integer category,
+//                               @RequestParam(required = false) LocalDate date,
+//                               Model model) {
+//        List<Movie> movies = movieService.searchMoviesByCriteria(name, author, category, date);
+//        model.addAttribute("movies", movies);
+//        List<Category> categories = categoryService.getAllCategories();
+//        System.out.println("Categories: " + categories);  // Kiểm tra giá trị categories
+//        model.addAttribute("categories", categories);
+//        model.addAttribute("showtimes", showtimeService.getAllShowtimes());
+//        model.addAttribute("cinemas", cinemaService.getAllCinemas());
+//        model.addAttribute("rooms", roomService.getAllRooms());
+//        return "HomePage";
+//    }
 
-    // Tìm kiếm phim theo ngày
-    @GetMapping("/movies/search-by-date")
-    public String searchMoviesByDate(@RequestParam("date") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date, Model model) {
-        List<Movie> movies = movieService.searchMoviesByDate(date);
-        model.addAttribute("movies", movies);
-        model.addAttribute("showtimes", showtimeService.getAllShowtimes());
-        model.addAttribute("showtime", new ShowTime());
 
-        model.addAttribute("cinemas", cinemaService.getAllCinemas());
-        model.addAttribute("rooms", roomService.getAllRooms());
-        return "HomePage";
-    }
 
     @GetMapping("/movies/{id}")
     public String getMovieDetails(@PathVariable("id") int movieId, Model model) {
